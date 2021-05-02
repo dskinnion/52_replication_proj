@@ -8,7 +8,11 @@ I have been interested in authoritarian regimes, and I have had the honor of tak
 
 ## Original Paper
 
-The original paper, "Leader Age, Death, and Political Liberalization in Dictatorships" by Professor Sarah Hummel can be found at https://www.journals.uchicago.edu/doi/pdf/10.1086/707492. The supplemental appendix can be found at https://www.journals.uchicago.edu/doi/suppl/10.1086/707492/suppl_file/181762Appendix.pdf. The replication materials can be found at https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/OOLBO9. 
+The original paper, "Leader Age, Death, and Political Liberalization in Dictatorships" by Professor Sarah Hummel can be found at https://www.journals.uchicago.edu/doi/pdf/10.1086/707492. 
+
+The supplemental appendix can be found at https://www.journals.uchicago.edu/doi/suppl/10.1086/707492/suppl_file/181762Appendix.pdf. 
+
+The replication materials can be found at https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/OOLBO9. 
 
 ## Variables and Data Sources
 
