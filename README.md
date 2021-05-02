@@ -34,13 +34,21 @@ From the Appendix:
 
 * **Attempted Coup**: An indicator variable for whether a coup attempt (successful or unsuccessful) occurred. This excludes events defined as “conspiracies.” (*Source: Peter Nardulli, Michael Martin, Michael Slana, Sina Toosi and Joseph Bajjalieh. 2013. “The Coup D’Etat Project,” Cline Center for Democracy.*)
 
-## Code
+## Code Guide
+
+* **/graphics**: Directory containing images for the project
+
+* **/raw-data**: Directory containing raw data made available by Professor Hummel through the Harvard Dataverse
+
+* **Original_Paper.pdf**: A copy of the original paper by Professor Hummel
+
+* **Original_Appendix.pdf**: A copy of the orginial appendix by Professor Hummel
+
+* **authoritarian_replication.Rmd**: R Markdown file with all of my code necessary for the replication
+
+* **authoritarian_replication.pdf**: PDF file of the replication paper
 
 ## Computational Requirement
-R is required to run all code for this project. All files created using RStudio Version 1.3.959 and R version 4.0.2 (2020-06-22). Libraries necessary to run code include:
-
-* Tidyverse
-* MASS
- *** Finish
+R is required to run all code for this project. All files created using RStudio Version 1.3.959 and R version 4.0.2 (2020-06-22). 
 
 
