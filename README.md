@@ -14,7 +14,8 @@ The original paper, "Leader Age, Death, and Political Liberalization in Dictator
 
 From the Appendix:
 
-* **Polity**: The revised combined Polity score (Polity2 in the dataset), calculated by subtracting the 10-point autocracy score from the 10-point democracy score. The resulting measure ranges from -10 to +10. \n*Source: Monty Marshall, Keith Jaggers and Ted Gurr. 2011. Polity IV Project, Center for Systemic Peace*
+* **Polity**: The revised combined Polity score (Polity2 in the dataset), calculated by subtracting the 10-point autocracy score from the 10-point democracy score. The resulting measure ranges from -10 to +10. 
+*Source: Monty Marshall, Keith Jaggers and Ted Gurr. 2011. Polity IV Project, Center for Systemic Peace*
 
 ## Code
 
