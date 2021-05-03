@@ -19,7 +19,7 @@ library(gt)
 library(stargazer)
 ```
 
-# Abstract [^1]
+# Abstract[^1]
 
 Hummel (2020) found that leader deaths rarely result in political liberalization; while personalist and older dictators' deaths are more likely to lead to liberalization, such opportunities are nonetheless modest. With replication data and code provided by Professor Hummel through the Harvard Dataverse, I was able to replicate the findings of the original paper. My extension ***
 
