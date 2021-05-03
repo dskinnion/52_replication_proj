@@ -1,8 +1,15 @@
 ---
-title: "Replication Project"
+title: "Replication of: Leader Age, Death, and Political Liberalization in Dictatorships"
 author: "Dominic Skinnion"
-date: "5/2/2021"
-output: pdf_document
+date: "May 7, 2021"
+output: bookdown::pdf_document2
+#bibliography: bib.bib
+link_citations: true
+toc: false
+indent: true
+header-includes:
+    - \usepackage{setspace}
+    - \doublespacing
 ---
 
 ```{r setup, include=FALSE}
@@ -12,9 +19,13 @@ library(gt)
 library(stargazer)
 ```
 
-# Abstract
+# Abstract [^1]
+
+Hummel (2020) found that leader deaths rarely result in political liberalization; while personalist and older dictators' deaths are more likely to lead to liberalization, such opportunities are nonetheless modest. With replication data and code provided by Professor Hummel through the Harvard Dataverse, I was able to replicate the findings of the original paper. My extension ***
 
 # Introduction
+
+
 
 # Literature Review
 
@@ -26,3 +37,4 @@ library(stargazer)
 
 # Bibliography
 
+[^1]: All materials necessary for this replication can be accessed at my [GitHub Repository.](https://github.com/dskinnion/52_replication_proj)
