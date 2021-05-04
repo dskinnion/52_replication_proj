@@ -20,6 +20,8 @@ library(raster)
 
 ```{r, echo = FALSE}
 
+### Figure 2 Replication
+
 data<-read.csv("../raw-data/datafull_190123.csv")
 data<-data[-c(1)]
 
@@ -904,6 +906,7 @@ plotty_abs10<-rbind(abs10_noage_nofe,abs10_age_nofe,abs10_noage_fe,abs10_age_fe)
 ```
 
 ```{r, echo = FALSE}
+
 ###H0 Plot - Figure 2 in the main article. 
 
 png("../graphics/figH0.png")
@@ -974,6 +977,9 @@ dev.off()
 ```
 
 ```{r, echo = FALSE, fig.width=8, fig.height=8}
+
+### Figure 1 Replication
+
 death<-subset(data,death==1)
 
 png(file="../graphics/fig_prepostpolity1.png")
@@ -1049,6 +1055,8 @@ dev.off()
 
 ```{r}
 
+### Figure 1 Replication Continued
+
 png("../graphics/fig_1.png", res = 200, units = "in", width = 10, height = 10)
 
 plot(0:8, 0:8, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "")
@@ -1058,6 +1066,247 @@ rasterImage(readPNG(source="../graphics/fig_prepostpolity10.png"), 0, 0, 4, 4)
 text(0, 7.6, "A", cex=2)
 text(4, 7.6, "B", cex=2)
 text(0, 3.8, "C", cex=2)
+dev.off()
+
+```
+
+```{r}
+
+### Figure 3 Replication
+
+####### H1 Analysis:  Effect of leader death and age on political liberalization ########
+
+# 1-Year DV (Appendix, Table 14)
+
+nondem<-subset(data,polity_lag1<0)
+nondem<-subset(nondem, is.na(death)==FALSE & is.na(agepre)==FALSE )
+
+d1<-subset(nondem,death_for1==0 )
+d1<-subset(d1,is.na(polity_for1)==FALSE)
+
+d<-d1
+m1<- lm(polity_for1~death*agepre,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE)
+m2<- lm(polity_for1~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+a<-seq(quantile(d$agepre,0.1, na.rm=TRUE),quantile(d$agepre,0.9,na.rm=TRUE),1)
+marg1_nofe<-margins(m2,at=list(agepre=a),vcov=vc,variables="death")
+
+d<-subset(nondem,is.na(polity_for1) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- lm(polity_for1~death*agepre+polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m4<- lm(polity_for1~death*agepre+tenpre+polity_lag1,data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d1<-subset(d1,is.na(ccode)==FALSE &is.na(year)==FALSE)
+
+d<-d1
+m5<- lm(polity_for1~death*agepre+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE)
+m6<- lm(polity_for1~death*agepre + polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+a<-seq(quantile(d$agepre,0.1, na.rm=TRUE),quantile(d$agepre,0.9,na.rm=TRUE),1)
+marg1_fe<-margins(m6,at=list(agepre=a),vcov=vc,variables="death")
+
+d<-subset(nondem,is.na(polity_for1) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m7<- lm(polity_for1~death*agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m7,cluster=d$ccode,type="CR1")
+se7<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m8<- lm(polity_for1~death*agepre+tenpre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m8,cluster=d$ccode,type="CR1")
+se8<-sqrt(diag(vc))
+
+
+# 5-Year DV (Appendix, Table 15)
+
+nondem<-subset(data,polity_lag1<0)
+nondem<-subset(nondem, is.na(death)==FALSE & is.na(agepre)==FALSE )
+
+d5<-subset(nondem,death_for5==0 )
+d5<-subset(d1,is.na(polity_for5)==FALSE)
+
+d<-d5
+m1<- lm(polity_for5~death*agepre,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE)
+m2<- lm(polity_for5~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+a<-seq(quantile(d$agepre,0.1, na.rm=TRUE),quantile(d$agepre,0.9,na.rm=TRUE),1)
+marg5_nofe<-margins(m2,at=list(agepre=a),vcov=vc,variables="death")
+
+d<-subset(nondem,is.na(polity_for5) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- lm(polity_for5~death*agepre+polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m4<- lm(polity_for5~death*agepre+tenpre+polity_lag1,data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d5<-subset(d5,is.na(ccode)==FALSE &is.na(year)==FALSE)
+
+d<-d5
+m5<- lm(polity_for5~death*agepre+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE)
+m6<- lm(polity_for5~death*agepre + polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+a<-seq(quantile(d$agepre,0.1, na.rm=TRUE),quantile(d$agepre,0.9,na.rm=TRUE),1)
+marg5_fe<-margins(m6,at=list(agepre=a),vcov=vc,variables="death")
+
+d<-subset(nondem,is.na(polity_for5) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m7<- lm(polity_for5~death*agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m7,cluster=d$ccode,type="CR1")
+se7<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m8<- lm(polity_for5~death*agepre+tenpre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m8,cluster=d$ccode,type="CR1")
+se8<-sqrt(diag(vc))
+
+
+# 10-Year DV (Appendix, Table 16)
+
+nondem<-subset(data,polity_lag1<0)
+nondem<-subset(nondem, is.na(death)==FALSE & is.na(agepre)==FALSE )
+
+d10<-subset(nondem,death_for10==0 )
+d10<-subset(d1,is.na(polity_for10)==FALSE)
+
+d<-d10
+m1<- lm(polity_for10~death*agepre,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE)
+m2<- lm(polity_for10~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+a<-seq(quantile(d$agepre,0.1, na.rm=TRUE),quantile(d$agepre,0.9,na.rm=TRUE),1)
+marg10_nofe<-margins(m2,at=list(agepre=a),vcov=vc,variables="death")
+
+d<-subset(nondem,is.na(polity_for10) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- lm(polity_for10~death*agepre+polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m4<- lm(polity_for10~death*agepre+tenpre+polity_lag1,data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d10<-subset(d10,is.na(ccode)==FALSE &is.na(year)==FALSE)
+
+d<-d10
+m5<- lm(polity_for10~death*agepre+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se10<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE)
+m6<- lm(polity_for10~death*agepre + polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+a<-seq(quantile(d$agepre,0.1, na.rm=TRUE),quantile(d$agepre,0.9,na.rm=TRUE),1)
+marg10_fe<-margins(m6,at=list(agepre=a),vcov=vc,variables="death")
+
+d<-subset(nondem,is.na(polity_for10) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m7<- lm(polity_for10~death*agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m7,cluster=d$ccode,type="CR1")
+se7<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m8<- lm(polity_for10~death*agepre+tenpre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m8,cluster=d$ccode,type="CR1")
+se8<-sqrt(diag(vc))
+
+### Plot for H1 : Figure 3 in main article 
+
+confi<-function(x,length,lev){
+  confi<-confint(subset(x, agepre==summary(x)$agepre[1]),level=lev)	
+  for(i in c(summary(x)$agepre[1:length])){
+    a<-i
+    confi<-rbind(confi,confint(subset(x, agepre==a))	)
+  }
+  return(data.frame(confi))
+}
+
+
+png(file="../graphics/fig3.png")
+par(mfrow=c(3,2))
+len<-nrow(summary(marg1_nofe))
+confintty<-confi(marg1_nofe,len,0.9)
+plot(x=summary(marg1_nofe)$agepre,y=as.numeric(summary(marg1_nofe)$AME),pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-2,1.5),cex=0.8, main="1-Year DV, No Fixed Effects")
+segments(x0=summary(marg1_nofe)$agepre,
+         y0=confintty$lower[1:len],
+         x1=summary(marg1_nofe)$agepre,
+         y1=confintty$upper[1:len])
+abline(h=0)
+
+len<-nrow(summary(marg1_fe))
+confintty<-confi(marg1_fe,len,0.9)
+plot(x=summary(marg1_fe)$agepre,y=as.numeric(summary(marg1_fe)$AME),pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-2,1.5),cex=0.8, main="1-Year DV, Fixed Effects")
+segments(x0=summary(marg1_fe)$agepre,
+         y0=confintty$lower[1:len],
+         x1=summary(marg1_fe)$agepre,
+         y1=confintty$upper[1:len])
+abline(h=0)
+
+len<-nrow(summary(marg5_nofe))
+confintty<-confi(marg5_nofe,len,0.9)
+plot(x=summary(marg5_nofe)$agepre,y=as.numeric(summary(marg5_nofe)$AME),pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-2,1.5),cex=0.8, main="5-Year DV, No Fixed Effects")
+segments(x0=summary(marg5_nofe)$agepre,
+         y0=confintty$lower[1:len],
+         x1=summary(marg5_nofe)$agepre,
+         y1=confintty$upper[1:len])
+abline(h=0)
+
+len<-nrow(summary(marg5_fe))
+confintty<-confi(marg5_fe,len,0.9)
+plot(x=summary(marg5_fe)$agepre,y=as.numeric(summary(marg5_fe)$AME),pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-2,1.5),cex=0.8, main="5-Year DV, Fixed Effects")
+segments(x0=summary(marg5_fe)$agepre,
+         y0=confintty$lower[1:len],
+         x1=summary(marg5_fe)$agepre,
+         y1=confintty$upper[1:len])
+abline(h=0)
+
+len<-nrow(summary(marg10_nofe))
+confintty<-confi(marg10_nofe,len,0.9)
+plot(x=summary(marg10_nofe)$agepre,y=as.numeric(summary(marg10_nofe)$AME),pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-2,1.5),cex=0.8, main="10-Year DV, No Fixed Effects")
+segments(x0=summary(marg10_nofe)$agepre,
+         y0=confintty$lower[1:len],
+         x1=summary(marg10_nofe)$agepre,
+         y1=confintty$upper[1:len])
+abline(h=0)
+
+len<-nrow(summary(marg10_fe))
+confintty<-confi(marg10_fe,len,0.9)
+plot(x=summary(marg10_fe)$agepre,y=as.numeric(summary(marg10_fe)$AME),pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-2,1.5),cex=0.8, main="10-Year DV, Fixed Effects")
+segments(x0=summary(marg10_fe)$agepre,
+         y0=confintty$lower[1:len],
+         x1=summary(marg10_fe)$agepre,
+         y1=confintty$upper[1:len])
+abline(h=0)
 dev.off()
 
 ```

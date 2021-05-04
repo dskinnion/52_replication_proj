@@ -44,9 +44,14 @@ library(stargazer)
 ![Replication of Figure 2](graphics/figH0.png)
 </p>
 
-*** INTERPRETATION ***
+|       These plots show that, for the most part, the effect of leader's death on political liberalization is insignificant. There is a negative and significant impact on the 5-Year Democracy variable, and in one case with the 10-Year Polity variable. Hummel notes that there is no case in which there is a significantly positive effect on the likelihood of political change. She says, "These results highlight just how unlikely significant political change, particularly in a liberalizing direction, is to follow the death of a dictator" (2002, p. 983). 
+|       Next, I replicated Figure 3. In each subplot, the independent variable is age and the dependent variable is the average marginal effect of leader death on Polity. The first row uses the 1-Year Dependent Variable, the second row uses the 5-Year Dependent Variable, and the third row uses the 10-Year Dependent Variable. The models used for the first column include no fixed effects, whereas the models in the second column include fixed effect specifications for country and year.
 
+<p>
+![Replication of Figure 3](graphics/fig3.png)
+</p>
 
+|       
 
 # Discussion
 
