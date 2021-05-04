@@ -73,6 +73,15 @@ library(stargazer)
 </p>
 
 |       First, my replication was not identical to the initial plot in terms of layout. Mine is slightly more stretched along the x-axis. Substantially, the graphs are the same. We can see that as dictators age, the gap between the personalist and non-personalist dictators' probabilities increase for both attempted coups and irregular exits more broadly. This hints that personalist dictators are perhaps more susceptible to coup attemps than are non-personalist dictators. 
+|       Hummel then plots the survival (as in no coup or irregular exit) probabilities for both personalist and non-personalist regimes, comparing young and old dictators in each. Young and old thresholds are calculated using the 10th and 90th percentiles of dictator ages at death; these end up as 49 and 82, respectively. Using Cox proportional hazard models, she controls for Polity in year *t-1* and the number of coup attempts in the last ten years. In full transparency, I am not adept at Cox proportional hazard models, but I was able to replicate the results thanks to the code provided through the Harvard Dataverse.
+
+<p>
+![Replication of Figure 7](graphics/fig7.png)
+</p>
+
+*** INTERPRET
+*** FIG 8
+*** FIG 9
 
 # Discussion
 

@@ -2183,5 +2183,126 @@ dev.off()
 
 ```
 
+```{r}
+
+### Replication of Figure 7
+
+#### H2b: Survival analysis 
+
+datasurv<-read.csv("../raw-data/survdata_190123.csv")
+datasurv<-datasurv[-c(1)]
+datasurv$start<-datasurv$tenpre
+datasurv$stop<-datasurv$start+1
+
+
+## DV: Coup Attempts (Appendix, Table 28)
+nondemsurv<-subset(datasurv,polity_lag1<0)
+
+m1<-coxph(Surv(start,stop,allcoup_bin)~agepre+personal_lag1+polity_lag1,data=nondemsurv)
+m2<-coxph(Surv(start,stop,allcoup_bin)~agepre*personal_lag1+polity_lag1,data=nondemsurv)
+m3<-coxph(Surv(start,stop,allcoup_bin)~agepre*personal_lag1 +polity_lag1+ allcoup_count_lag10,data=nondemsurv)
+m4<-coxph(Surv(start,stop,allcoup_bin)~agepre+personal_lag1+polity_lag1+factor(year),data=nondemsurv)
+m5<-coxph(Surv(start,stop,allcoup_bin)~agepre*personal_lag1+polity_lag1+factor(year),data=nondemsurv)
+m6<-coxph(Surv(start,stop,allcoup_bin)~agepre*personal_lag1 +polity_lag1+factor(year)+ allcoup_count_lag10,data=nondemsurv)
+
+## DV: Coup Attempts (Appendix, Table 29)
+m7<-coxph(Surv(start,stop,otherirreg)~agepre+personal_lag1+polity_lag1,data=nondemsurv)
+m8<-coxph(Surv(start,stop,otherirreg)~agepre*personal_lag1+polity_lag1,data=nondemsurv)
+m9<-coxph(Surv(start,stop,otherirreg)~agepre*personal_lag1+polity_lag1+allcoup_count_lag10,data=nondemsurv)
+m10<-coxph(Surv(start,stop,otherirreg)~agepre+personal_lag1+polity_lag1+factor(year),data=nondemsurv)
+m11<-coxph(Surv(start,stop,otherirreg)~agepre*personal_lag1+polity_lag1+factor(year),data=nondemsurv)
+m12<-coxph(Surv(start,stop,otherirreg)~agepre*personal_lag1+polity_lag1+allcoup_count_lag10+factor(year),data=nondemsurv)
+
+
+
+##H2b Survival Analysis Figure (Figure 7 in Appendix)
+
+nondemsurvd<-subset(nondemsurv,death==1)	
+al<-round(quantile(nondemsurvd$agepre,0.1, na.rm=TRUE))
+ah<-round(quantile(nondemsurvd$agepre,0.9,na.rm=TRUE))
+
+nondem<-subset(data,polity_lag1<0)	
+nondemd<-subset(nondem,death==1)	
+al<-round(quantile(nondemd$agepre,0.1, na.rm=TRUE))
+ah<-round(quantile(nondemd$agepre,0.9,na.rm=TRUE))
+
+
+png(file="../graphics/fig7.png")
+par(mfrow=c(2,2))
+
+xmax<-20
+
+newdata_young<-data.frame(agepre=al, polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE),personal_lag1=0,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_young<-survfit(m3,newdata=newdata_young,conf.type="plain",conf.int=0.9)
+newdata_old<-data.frame(agepre=ah,polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE), personal_lag1=0,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_old<-survfit(m3,newdata=newdata_old,conf.type="plain",conf.int=0.90)
+plot(fit_young$time[1:xmax], fit_young$surv[1:xmax],lty=1,main = "DV: Coup Attempt",xlab="years in office",ylab="survival= no coup",type="l",ylim=c(0,1.2),xlim=c(fit_young$time[1],fit_young$time[xmax]),yaxt="n")
+axis(2,at=c(0,0.2,0.4,0.6,0.8,1),labels=c("0","0.2","0.4","0.6","0.8","1"),las=2)
+cord.x<-c(fit_young$time[1],fit_young$time[1],fit_young$time[1:xmax],fit_young$time[xmax],fit_young$time[xmax],rev(fit_young$time[1:xmax]))
+cord.y<-c(fit_young$upper[1],fit_young$lower[1],fit_young$lower[1:xmax],fit_young$lower[xmax],fit_young$upper[xmax],rev(fit_young$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(0,0,0,alpha=0.6))
+lines(fit_old$time[1:xmax], fit_old$surv[1:xmax])
+cord.x<-c(fit_old$time[1],fit_old$time[1],fit_old$time[1:xmax],fit_old$time[xmax],fit_old$time[xmax],rev(fit_old$time[1:xmax]))
+cord.y<-c(fit_old$upper[1],fit_old$lower[1],fit_old$lower[1:xmax],fit_old$lower[xmax],fit_old$upper[xmax],rev(fit_old$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(0,0,0,alpha=0.3))
+abline(h=1.1)
+legend(fit_old$time[xmax]-6,1.05,legend=c("Young","Old"),pch=19,col=c(rgb(0,0,0,alpha=0.6),rgb(0,0,0,alpha=0.3)))
+text(3.5,1.17,c("Non-Personalist Regimes"),vfont=c("sans serif","bold italic"),pos=4)
+
+newdata_young<-data.frame(agepre=al, polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE),personal_lag1=0,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_young<-survfit(m9,newdata=newdata_young,conf.type="plain",conf.int=0.9)
+newdata_old<-data.frame(agepre=ah,polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE), personal_lag1=0,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_old<-survfit(m9,newdata=newdata_old,conf.type="plain",conf.int=0.90)
+plot(fit_young$time[1:xmax], fit_young$surv[1:xmax],lty=1,main = "DV: Irregular Exit",xlab="years in office",ylab="survival= no irregular exit",type="l",ylim=c(0,1.2),xlim=c(fit_young$time[1],fit_young$time[xmax]),yaxt="n")
+axis(2,at=c(0,0.2,0.4,0.6,0.8,1),labels=c("0","0.2","0.4","0.6","0.8","1"),las=2)
+cord.x<-c(fit_young$time[1],fit_young$time[1],fit_young$time[1:xmax],fit_young$time[xmax],fit_young$time[xmax],rev(fit_young$time[1:xmax]))
+cord.y<-c(fit_young$upper[1],fit_young$lower[1],fit_young$lower[1:xmax],fit_young$lower[xmax],fit_young$upper[xmax],rev(fit_young$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(0,0,0,alpha=0.6))
+lines(fit_old$time[1:xmax], fit_old$surv[1:xmax])
+cord.x<-c(fit_old$time[1],fit_old$time[1],fit_old$time[1:xmax],fit_old$time[xmax],fit_old$time[xmax],rev(fit_old$time[1:xmax]))
+cord.y<-c(fit_old$upper[1],fit_old$lower[1],fit_old$lower[1:xmax],fit_old$lower[xmax],fit_old$upper[xmax],rev(fit_old$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(0,0,0,alpha=0.3))
+abline(h=1.1)
+legend(fit_old$time[xmax]-6,1.05,legend=c("Young","Old"),pch=19,col=c(rgb(0,0,0,alpha=0.6),rgb(0,0,0,alpha=0.3)))
+text(3.5,1.17,c("Non-Personalist Regimes"),vfont=c("sans serif","bold italic"),pos=4)
+
+
+newdata_young<-data.frame(agepre=al, polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE),personal_lag1=1,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_young<-survfit(m9,newdata=newdata_young,conf.type="plain",conf.int=0.9)
+newdata_old<-data.frame(agepre=ah,polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE), personal_lag1=1,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_old<-survfit(m9,newdata=newdata_old,conf.type="plain",conf.int=0.90)
+plot(fit_young$time[1:xmax], fit_young$surv[1:xmax],lty=1,main = "",xlab="years in office",ylab="survival= no coup",type="l",ylim=c(0,1.2),xlim=c(fit_young$time[1],fit_young$time[xmax]),yaxt="n")
+axis(2,at=c(0,0.2,0.4,0.6,0.8,1),labels=c("0","0.2","0.4","0.6","0.8","1"),las=2)
+cord.x<-c(fit_young$time[1],fit_young$time[1],fit_young$time[1:xmax],fit_young$time[xmax],fit_young$time[xmax],rev(fit_young$time[1:xmax]))
+cord.y<-c(fit_young$upper[1],fit_young$lower[1],fit_young$lower[1:xmax],fit_young$lower[xmax],fit_young$upper[xmax],rev(fit_young$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(0,0,0,alpha=0.6))
+lines(fit_old$time[1:xmax], fit_old$surv[1:xmax])
+cord.x<-c(fit_old$time[1],fit_old$time[1],fit_old$time[1:xmax],fit_old$time[xmax],fit_old$time[xmax],rev(fit_old$time[1:xmax]))
+cord.y<-c(fit_old$upper[1],fit_old$lower[1],fit_old$lower[1:xmax],fit_old$lower[xmax],fit_old$upper[xmax],rev(fit_old$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(0,0,0,alpha=0.3))
+abline(h=1.1)
+legend(fit_old$time[xmax]-6,1.05,legend=c("Young","Old"),pch=19,col=c(rgb(0,0,0,alpha=0.6),rgb(0,0,0,alpha=0.3)))
+text(5,1.17,c("Personalist Regimes"),vfont=c("sans serif","bold italic"),pos=4)
+
+newdata_young<-data.frame(agepre=al, polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE),personal_lag1=1,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_young<-survfit(m9,newdata=newdata_young,conf.type="plain",conf.int=0.9)
+newdata_old<-data.frame(agepre=ah,polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE), personal_lag1=1,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_old<-survfit(m9,newdata=newdata_old,conf.type="plain",conf.int=0.90)
+plot(fit_young$time[1:xmax], fit_young$surv[1:xmax],lty=1,main = "",xlab="years in office",ylab="survival= no irregular exit",type="l",ylim=c(0,1.2),xlim=c(fit_young$time[1],fit_young$time[xmax]),yaxt="n")
+axis(2,at=c(0,0.2,0.4,0.6,0.8,1),labels=c("0","0.2","0.4","0.6","0.8","1"),las=2)
+cord.x<-c(fit_young$time[1],fit_young$time[1],fit_young$time[1:xmax],fit_young$time[xmax],fit_young$time[xmax],rev(fit_young$time[1:xmax]))
+cord.y<-c(fit_young$upper[1],fit_young$lower[1],fit_young$lower[1:xmax],fit_young$lower[xmax],fit_young$upper[xmax],rev(fit_young$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(0,0,0,alpha=0.6))
+lines(fit_old$time[1:xmax], fit_old$surv[1:xmax])
+cord.x<-c(fit_old$time[1],fit_old$time[1],fit_old$time[1:xmax],fit_old$time[xmax],fit_old$time[xmax],rev(fit_old$time[1:xmax]))
+cord.y<-c(fit_old$upper[1],fit_old$lower[1],fit_old$lower[1:xmax],fit_old$lower[xmax],fit_old$upper[xmax],rev(fit_old$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(0,0,0,alpha=0.3))
+abline(h=1.1)
+legend(fit_old$time[xmax]-6,1.05,legend=c("Young","Old"),pch=19,col=c(rgb(0,0,0,alpha=0.6),rgb(0,0,0,alpha=0.3)))
+text(1,1.17,c("Personalist Regimes"),vfont=c("sans serif","bold italic"),pos=4)
+
+dev.off()
+
+```
 
 
