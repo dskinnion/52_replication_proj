@@ -6,7 +6,7 @@ output: bookdown::pdf_document2
 #bibliography: bib.bib
 link_citations: true
 toc: false
-indent: true
+indent: false
 header-includes:
     - \usepackage{setspace}
     - \doublespacing
@@ -21,7 +21,7 @@ library(stargazer)
 
 # Abstract[^1]
 
-Hummel (2020) found that leader deaths rarely result in political liberalization; while personalist and older dictators' deaths are more likely to lead to liberalization, such opportunities are nonetheless modest. With replication data and code provided by Professor Hummel through the Harvard Dataverse, I was able to replicate the findings of the original paper. Given the robustness of the models created in the Appendix of the original paper, I extended the results by adapting the published figures to a multi-color palette which is colorblind-friendly. Additionally, ***
+|       Hummel (2020) found that leader deaths rarely result in political liberalization; while personalist and older dictators' deaths are more likely to lead to liberalization, such opportunities are nonetheless modest. With replication data and code provided by Professor Hummel through the Harvard Dataverse, I was able to replicate the findings of the original paper. Given the robustness of the models created in the Appendix of the original paper, I extended the results by adapting the published figures to a multi-color palette which is colorblind-friendly. Additionally, *** MORE EXTENSION???***
 
 # Introduction
 
@@ -31,9 +31,22 @@ Hummel (2020) found that leader deaths rarely result in political liberalization
 
 # Replication Analysis
 
-I began with a replication of Figure 2 from Hummel (2020). The figure depicts the coefficient estimates from a total of 48 different models which assess the effect of leader age on political change. The models are primarily in four different categories, based on their dependent variables. The first set of models uses Polity; the second set of models uses Democracy; the third set of models uses Regime Change; and the last set of models uses Absolute Polity Change. Within each set of models, there are three sub-categories. Each of these uses three different time effects: 1-Year Dependent Variable, which compares the dependent variable in year *t* to year *t-2*; 5-Year Dependent Variable, which compares the dependent variable in years *t* through *t+4* to year *t-2*; and a 10-Year Dependent Variable, which compares the dependent variable in years *t* through *t+9* to year *t-2*. Furthermore, within each of these subgroups, there are 4 versions of the model: one without a control for leader age and without fixed effects; one with a control for leader age and without fixed effects; one without a control for leader age and with fixed effects; and one with a control for age and with fixed effects. All models using Polity and Absolute Polity Change were linear models, whereas all models using Democracy and Regime Change were logit models. For the fixed effects linear models, fixed effects included country and year. For the fixed effects logit models, conditional logit models with country fixed effects were used.
+|       I began with a replication of Figure 1 from Hummel (2020). The figure has three subplots. Each depicts the relationship between the Polity of a country before and after the death of a leader. In each case, the Independent Variable is Polity, the year before the death of a leader. In Plot A, the Dependent Variable is Polity, 1 year after the death; in Plot B, it is Polity, 5 years after the death; and in Plot C, it is Polity, 10 years after the death.
 
+<p>
+![Replication of Figure 1](graphics/fig_1.png)
+</p>
+
+|       In these plots, one thing becomes abundantly clear, regardless of a leader's death, most regimes' Polity scores do not change drastically, even when we look at five years and ten years after the leader's death. Specifically, note that most regimes fall in the band around the middle of each plot: these are those regimes which did not experience significant differences (more than 5) in Polity scores. If leader death led to political liberalization, we would expect that most regimes would lie in the upper-left corner; these are regimes that experienced significant increases in Polity scores. However, this is not what we see. Instead, we actually see about an even number of regimes in the top left corner and in the bottom right corner; this means that we see just as many regimes which see significant decreases in Polity scores as regimes which see significant increases in Polity score.
+|       I continued with a replication of Figure 2 from Hummel (2020). The figure depicts the coefficient estimates from a total of 48 different models which assess the effect of leader age on political change. The models are primarily in four different categories, based on their dependent variables. The first set of models uses Polity; the second set of models uses Democracy; the third set of models uses Regime Change; and the last set of models uses Absolute Polity Change. Within each set of models, there are three sub-categories. Each of these uses three different time frames: 1-Year Dependent Variable, which compares the dependent variable in year *t* to year *t-2*; 5-Year Dependent Variable, which compares the dependent variable in years *t* through *t+4* to year *t-2*; and a 10-Year Dependent Variable, which compares the dependent variable in years *t* through *t+9* to year *t-2*. Furthermore, within each of these subgroups, there are 4 versions of the model: one without a control for leader age and without fixed effects; one with a control for leader age and without fixed effects; one without a control for leader age and with fixed effects; and one with a control for age and with fixed effects. All models using Polity and Absolute Polity Change were linear models, whereas all models using Democracy and Regime Change were logit models. For the fixed effects linear models, fixed effects included country and year. For the fixed effects logit models, conditional logit models with country fixed effects were used.
+
+<p>
 ![Replication of Figure 2](graphics/figH0.png)
+</p>
+
+*** INTERPRETATION ***
+
+
 
 # Discussion
 
