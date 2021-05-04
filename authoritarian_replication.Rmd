@@ -13,7 +13,7 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 library(tidyverse)
 library(gt)
 library(stargazer)
@@ -45,13 +45,34 @@ library(stargazer)
 </p>
 
 |       These plots show that, for the most part, the effect of leader's death on political liberalization is insignificant. There is a negative and significant impact on the 5-Year Democracy variable, and in one case with the 10-Year Polity variable. Hummel notes that there is no case in which there is a significantly positive effect on the likelihood of political change. She says, "These results highlight just how unlikely significant political change, particularly in a liberalizing direction, is to follow the death of a dictator" (2002, p. 983). 
-|       Next, I replicated Figure 3. In each subplot, the independent variable is age and the dependent variable is the average marginal effect of leader death on Polity. The first row uses the 1-Year Dependent Variable, the second row uses the 5-Year Dependent Variable, and the third row uses the 10-Year Dependent Variable. The models used for the first column include no fixed effects, whereas the models in the second column include fixed effect specifications for country and year.
+|       Next, I replicated Figure 3. In each subplot, the independent variable is age and the dependent variable is the average marginal effect of leader death on Polity. The first row uses the 1-Year Dependent Variable, the second row uses the 5-Year Dependent Variable, and the third row uses the 10-Year Dependent Variable. The models used for the first column include no fixed effects, whereas the models in the second column include fixed effect specifications for country and year. All models are OLS linear regressions, and they all include a control for Polity at year *t-2*. Marginal effects of leader deaths are calculated using the Margins package in R; the average marginal effect is average of the difference between the predicted value in a year with a death of the leader and the predicted value in a year without a death of the leader.
 
 <p>
 ![Replication of Figure 3](graphics/fig3.png)
 </p>
 
-|       
+|       While all of these model specifications indeed show that the average marginal effect of death on Polity increases as does age, the effect is not large, nor statistically significant (note the overlap of the bars with the line at 0). This provides a good indication that there is support to Hummel's first hypothesis that political liberalization is more likely to follow death as a dictator ages. However, because the results are not statistically significant, and appear to have a relatively small effect, we cannot say that age alone is a major contributor to political liberalization after the death of a leader.
+|       As a result, Figure 4 differentiates between regime type: personalist or non-personalist. The models are nearly identical to those from Figure 3, except for the addition of a triple interaction between death, age, and regime type. Furthermore, these models also include a control for leader age at year *t-1*.
+
+<p>
+![Replication of Figure 4](graphics/fig4.png)
+</p>
+
+|       These figures support Hummel's second hypothesis that post-death liberalization is more likely as leaders age in personalist regimes. We can see that in all specifications, as personalist leaders age, the average marginal effect of death increases, whereas the opposite is true in non-personalist regimes. Importantly, the effect is statistically significant in models that use the 5-Year and 10-Year Dependent Variables, which implies that political liberalization likely takes time to occur following the death of a personalist leader; reform is not likely in the year immediately following death.
+|       However, Hummel also showed that these events are extremely rare: death only accounts for about 10% of leader exits among personalist dictators. This can be seen in the replication of Figure 5.
+
+<p>
+![Replication of Figure 5](graphics/fig5.png)
+</p>
+
+|       Unfortunately, even though it appears the best chance at political liberalization comes when aging personalist dictators die, we can see that personalist dictators die at much lower rates than non-personalist dictators. However, the increased number of irregular exits warrants further analysis.
+|       In order to investigate the incidence of irregular exits, Hummel then used logit models to predict the probabilities that a leader would face a coup-attempt or an irregular exit as a function of age and regime type. The models include controls for both the Polity at year *t-1* and a lagged count of attempted and successful coups in the last ten years. Here is my replication of Figure 6:
+
+<p>
+![Replication of Figure 6](graphics/fig6.png)
+</p>
+
+|       First, my replication was not identical to the initial plot in terms of layout. Mine is slightly more stretched along the x-axis. Substantially, the graphs are the same. We can see that as dictators age, the gap between the personalist and non-personalist dictators' probabilities increase for both attempted coups and irregular exits more broadly. This hints that personalist dictators are perhaps more susceptible to coup attemps than are non-personalist dictators. 
 
 # Discussion
 

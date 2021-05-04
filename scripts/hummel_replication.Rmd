@@ -1311,4 +1311,877 @@ dev.off()
 
 ```
 
+```{r}
+
+### Figure 4 Replication
+
+######### Hypothesis 2a: Effect of leader death and age in personalist vs non-personalist regimes
+
+
+# 1-Year DV (Appendix, Table 17)
+
+## Basic Specification 
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+nondem<-subset(nondem, is.na(death)==FALSE & is.na(agepre)==FALSE & is.na(personal_lag1)==FALSE)
+
+d1<-subset(nondem,death_for1==0 )
+d1<-subset(d1,is.na(polity_for1)==FALSE & is.na(polity_lag1)==FALSE)
+d1p<-subset(d1,personal_lag1==1)
+d1n<-subset(d1,personal_lag1==0)
+
+d<-d1p
+m1<- lm(polity_for1~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d1p<-subset(d1p,is.na(year)==FALSE)
+d<-d1p
+m2<- lm(polity_for1~death*agepre+ polity_lag1 +factor(year),data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+
+d<-d1n
+m3<- lm(polity_for1~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+
+d1n<-subset(d1n,is.na(year)==FALSE)
+d<-d1n
+m4<- lm(polity_for1~death*agepre+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-d1
+m5<- lm(polity_for1~death*agepre*personal_lag1 + polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+a<-seq(quantile(d$agepre,0.1, na.rm=TRUE),quantile(d$agepre,0.9,na.rm=TRUE),1)
+marg1_nofe<-margins(m5,at=list(personal_lag1=0:1,agepre=a),vcov=vc,variables="death")
+
+
+d1<-subset(d1,is.na(year)==FALSE)
+d<-d1
+m6<- lm(polity_for1~death*agepre*personal_lag1+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+marg1_fe<-margins(m6,at=list(personal_lag1=0:1,agepre=a),vcov=vc,variables="death")
+
+
+## Tenure Specification (Appendix, Table 18)
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+nondem<-subset(nondem, is.na(death)==FALSE & is.na(agepre)==FALSE & is.na(personal_lag1)==FALSE)
+
+d1<-subset(nondem,death_for1==0 )
+d1<-subset(d1,is.na(polity_for1)==FALSE & is.na(polity_lag1)==FALSE & is.na(tenpre)==FALSE)
+d1p<-subset(d1,personal_lag1==1)
+d1n<-subset(d1,personal_lag1==0)
+
+d<-d1p
+m1<- lm(polity_for1~death*agepre + tenpre+ polity_lag1,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d1p<-subset(d1p,is.na(year)==FALSE)
+d<-d1p
+m2<- lm(polity_for1~death*agepre+tenpre+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+
+d<-d1n
+m3<- lm(polity_for1~death*agepre + tenpre+ polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+
+d1n<-subset(d1n,is.na(year)==FALSE)
+d<-d1n
+m4<- lm(polity_for1~death*agepre+tenpre+polity_lag1+factor(year),data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-d1
+m5<- lm(polity_for1~death*agepre*personal_lag1 +tenpre+ polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+d1<-subset(d1,is.na(year)==FALSE)
+d<-d1
+m6<- lm(polity_for1~death*agepre*personal_lag1+tenpre+polity_lag1+ factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+
+## Basic Specification, Full Sample (Appendix, Table 19)
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+nondem<-subset(nondem, is.na(death)==FALSE & is.na(agepre)==FALSE & is.na(personal_lag1)==FALSE)
+
+
+d1<-subset(d1,is.na(polity_lag1)==FALSE)
+d1p<-subset(d1,personal_lag1==1)
+d1n<-subset(d1,personal_lag1==0)
+
+d<-d1p
+m1<- lm(polity_for1~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d1p<-subset(d1p,is.na(year)==FALSE)
+d<-d1p
+m2<- lm(polity_for1~death*agepre+ polity_lag1 +factor(year),data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+
+d<-d1n
+m3<- lm(polity_for1~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+
+d1n<-subset(d1n,is.na(year)==FALSE)
+d<-d1n
+m4<- lm(polity_for1~death*agepre+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-d1
+m5<- lm(polity_for1~death*agepre*personal_lag1 + polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+d1<-subset(d1,is.na(year)==FALSE)
+d<-d1
+m6<- lm(polity_for1~death*agepre*personal_lag1+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+
+
+##### 5-Year DV
+
+## Basic Specification (Appendix, Table 20)
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+nondem<-subset(nondem, is.na(death)==FALSE & is.na(agepre)==FALSE & is.na(personal_lag1)==FALSE)
+
+d5<-subset(nondem,death_for5==0 )
+d5<-subset(d5,is.na(polity_for5)==FALSE & is.na(polity_lag1)==FALSE)
+d5p<-subset(d5,personal_lag1==1)
+d5n<-subset(d5,personal_lag1==0)
+
+d<-d5p
+m1<- lm(polity_for5~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d5p<-subset(d5p,is.na(year)==FALSE)
+d<-d5p
+m2<- lm(polity_for5~death*agepre+ polity_lag1 +factor(year),data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+
+d<-d5n
+m3<- lm(polity_for5~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+
+d5n<-subset(d5n,is.na(year)==FALSE)
+d<-d5n
+m4<- lm(polity_for5~death*agepre+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-d5
+m5<- lm(polity_for5~death*agepre*personal_lag1 + polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+marg5_nofe<-margins(m5,at=list(personal_lag1=0:1,agepre=a),vcov=vc,variables="death")
+
+
+d5<-subset(d5,is.na(year)==FALSE)
+d<-d5
+m6<- lm(polity_for5~death*agepre*personal_lag1+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+marg5_fe<-margins(m6,at=list(personal_lag1=0:1,agepre=a),vcov=vc,variables="death")
+
+
+## Tenure Specification (Appendix, Table 21)
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+nondem<-subset(nondem, is.na(death)==FALSE & is.na(agepre)==FALSE & is.na(personal_lag1)==FALSE)
+
+d5<-subset(nondem,death_for5==0 )
+d5<-subset(d5,is.na(polity_for5)==FALSE & is.na(polity_lag1)==FALSE & is.na(tenpre)==FALSE)
+d5p<-subset(d5,personal_lag1==1)
+d5n<-subset(d5,personal_lag1==0)
+
+d<-d5p
+m1<- lm(polity_for5~death*agepre + tenpre+ polity_lag1,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d5p<-subset(d5p,is.na(year)==FALSE)
+d<-d5p
+m2<- lm(polity_for5~death*agepre+tenpre+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+
+d<-d5n
+m3<- lm(polity_for5~death*agepre + tenpre+ polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+
+d5n<-subset(d5n,is.na(year)==FALSE)
+d<-d5n
+m4<- lm(polity_for5~death*agepre+tenpre+polity_lag1+factor(year),data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-d5
+m5<- lm(polity_for5~death*agepre*personal_lag1 +tenpre+ polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+d5<-subset(d5,is.na(year)==FALSE)
+d<-d5
+m6<- lm(polity_for5~death*agepre*personal_lag1+tenpre+polity_lag1+ factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+
+
+## Basic Specification, Full Sample  (Appendix, Table 22)
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+nondem<-subset(nondem, is.na(death)==FALSE & is.na(agepre)==FALSE & is.na(personal_lag1)==FALSE)
+
+
+d5<-subset(d5,is.na(polity_lag1)==FALSE)
+d5p<-subset(d5,personal_lag1==1)
+d5n<-subset(d5,personal_lag1==0)
+
+d<-d5p
+m1<- lm(polity_for5~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d5p<-subset(d5p,is.na(year)==FALSE)
+d<-d5p
+m2<- lm(polity_for5~death*agepre+ polity_lag1 +factor(year),data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+
+d<-d5n
+m3<- lm(polity_for5~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+
+d5n<-subset(d5n,is.na(year)==FALSE)
+d<-d5n
+m4<- lm(polity_for5~death*agepre+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-d5
+m5<- lm(polity_for5~death*agepre*personal_lag1 + polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+d5<-subset(d5,is.na(year)==FALSE)
+d<-d5
+m6<- lm(polity_for5~death*agepre*personal_lag1+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+
+### 10-Year DV
+
+## Basic Specification (Appendix, Table 23)
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+nondem<-subset(nondem, is.na(death)==FALSE & is.na(agepre)==FALSE & is.na(personal_lag1)==FALSE)
+
+d10<-subset(nondem,death_for10==0 )
+d10<-subset(d10,is.na(polity_for10)==FALSE & is.na(polity_lag1)==FALSE)
+d10p<-subset(d10,personal_lag1==1)
+d10n<-subset(d10,personal_lag1==0)
+
+d<-d10p
+m1<- lm(polity_for10~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d10p<-subset(d10p,is.na(year)==FALSE)
+d<-d10p
+m2<- lm(polity_for10~death*agepre+ polity_lag1 +factor(year),data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+
+d<-d10n
+m3<- lm(polity_for10~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+
+d10n<-subset(d10n,is.na(year)==FALSE)
+d<-d10n
+m4<- lm(polity_for10~death*agepre+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-d10
+m5<- lm(polity_for10~death*agepre*personal_lag1 + polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+marg10_nofe<-margins(m5,at=list(personal_lag1=0:1,agepre=a),vcov=vc,variables="death")
+
+
+d10<-subset(d10,is.na(year)==FALSE)
+d<-d10
+m6<- lm(polity_for10~death*agepre*personal_lag1+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+marg10_fe<-margins(m6,at=list(personal_lag1=0:1,agepre=a),vcov=vc,variables="death")
+
+
+## Tenure Specification (Appendix, Table 24)
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+nondem<-subset(nondem, is.na(death)==FALSE & is.na(agepre)==FALSE & is.na(personal_lag1)==FALSE)
+
+d10<-subset(nondem,death_for10==0 )
+d10<-subset(d10,is.na(polity_for10)==FALSE & is.na(polity_lag1)==FALSE & is.na(tenpre)==FALSE)
+d10p<-subset(d10,personal_lag1==1)
+d10n<-subset(d10,personal_lag1==0)
+
+d<-d10p
+m1<- lm(polity_for10~death*agepre + tenpre+ polity_lag1,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d10p<-subset(d10p,is.na(year)==FALSE)
+d<-d10p
+m2<- lm(polity_for10~death*agepre+tenpre+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+
+d<-d10n
+m3<- lm(polity_for10~death*agepre + tenpre+ polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+
+d10n<-subset(d10n,is.na(year)==FALSE)
+d<-d10n
+m4<- lm(polity_for10~death*agepre+tenpre+polity_lag1+factor(year),data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-d10
+m5<- lm(polity_for10~death*agepre*personal_lag1 +tenpre+ polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+d10<-subset(d10,is.na(year)==FALSE)
+d<-d10
+m6<- lm(polity_for10~death*agepre*personal_lag1+tenpre+polity_lag1+ factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+
+## Basic Specification, Full Sample (Appendix, Table 25)
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+nondem<-subset(nondem, is.na(death)==FALSE & is.na(agepre)==FALSE & is.na(personal_lag1)==FALSE)
+
+
+d10<-subset(d10,is.na(polity_lag1)==FALSE)
+d10p<-subset(d10,personal_lag1==1)
+d10n<-subset(d10,personal_lag1==0)
+
+d<-d10p
+m1<- lm(polity_for10~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d10p<-subset(d10p,is.na(year)==FALSE)
+d<-d10p
+m2<- lm(polity_for10~death*agepre+ polity_lag1 +factor(year),data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+
+d<-d10n
+m3<- lm(polity_for10~death*agepre + polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+
+d10n<-subset(d10n,is.na(year)==FALSE)
+d<-d10n
+m4<- lm(polity_for10~death*agepre+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-d10
+m5<- lm(polity_for10~death*agepre*personal_lag1 + polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+d10<-subset(d10,is.na(year)==FALSE)
+d<-d10
+m6<- lm(polity_for10~death*agepre*personal_lag1+ polity_lag1+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+
+
+####FIGURE FOR H2a (Figure 4 in Main Article)
+
+confi<-function(x,length,pers,lev){
+	p<-pers
+	confi<-confint(subset(x,personal_lag1==p & agepre==summary(x)$agepre[1]),level=lev)	
+	for(i in c(summary(x)$agepre[1:length])){
+		a<-i
+		confi<-rbind(confi,confint(subset(x,personal_lag1==p & agepre==a))	)
+	}
+	return(data.frame(confi))
+}
+
+
+png(file="../graphics/fig4.png")
+par(mfrow=c(3,2))
+
+len<-nrow(summary(marg1_nofe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg1_nofe,l1,0,0.9)
+confintty1<-confi(marg1_nofe,l1,1,0.9)
+plot(x=summary(marg1_nofe)$agepre[1:l1],y=summary(marg1_nofe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="1-Year DV, No Fixed Effects")
+segments(	x0=summary(marg1_nofe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg1_nofe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1])
+points(x=summary(marg1_nofe)$agepre[l2:len],y=summary(marg1_nofe)$AME[l2:len],pch=20,col="gray")
+segments(	x0=summary(marg1_nofe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg1_nofe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1],col="gray")
+abline(h=0)
+legend(41,9,c("Non-Personalist","Personalist"), pch=19,col=c("black","gray"),text.font=3,cex=0.8)
+
+
+
+len<-nrow(summary(marg1_fe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg1_fe,l1,0,0.9)
+confintty1<-confi(marg1_fe,l1,1,0.9)
+plot(x=summary(marg1_fe)$agepre[1:l1],y=summary(marg1_fe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="1-Year DV, Fixed Effects")
+segments(	x0=summary(marg1_nofe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg1_nofe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1])
+points(x=summary(marg1_fe)$agepre[l2:len],y=summary(marg1_fe)$AME[l2:len],pch=20,col="gray")
+segments(	x0=summary(marg1_fe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg1_fe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1],col="gray")
+abline(h=0)
+legend(41,9,c("Non-Personalist","Personalist"), pch=19,col=c("black","gray"),text.font=3,cex=0.8)
+
+
+len<-nrow(summary(marg5_nofe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg5_nofe,l1,0,0.9)
+confintty1<-confi(marg5_nofe,l1,1,0.9)
+plot(x=summary(marg5_nofe)$agepre[1:l1],y=summary(marg5_nofe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="5-Year DV, No Fixed Effects")
+segments(	x0=summary(marg5_nofe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg5_nofe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1])
+points(x=summary(marg5_nofe)$agepre[l2:len],y=summary(marg5_nofe)$AME[l2:len],pch=20,col="gray")
+segments(	x0=summary(marg5_nofe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg5_nofe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1],col="gray")
+abline(h=0)
+legend(41,9,c("Non-Personalist","Personalist"), pch=19,col=c("black","gray"),text.font=3,cex=0.8)
+
+
+len<-nrow(summary(marg5_fe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg5_fe,l1,0,0.9)
+confintty1<-confi(marg5_fe,l1,1,0.9)
+plot(x=summary(marg5_fe)$agepre[1:l1],y=summary(marg5_fe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="5-Year DV, Fixed Effects")
+segments(	x0=summary(marg5_fe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg5_fe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1])
+points(x=summary(marg5_fe)$agepre[l2:len],y=summary(marg5_fe)$AME[l2:len],pch=20,col="gray")
+segments(	x0=summary(marg5_fe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg5_fe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1],col="gray")
+abline(h=0)
+legend(41,9,c("Non-Personalist","Personalist"), pch=19,col=c("black","gray"),text.font=3,cex=0.8)
+
+
+
+len<-nrow(summary(marg10_nofe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg10_nofe,l1,0,0.9)
+confintty1<-confi(marg10_nofe,l1,1,0.9)
+plot(x=summary(marg10_nofe)$agepre[1:l1],y=summary(marg10_nofe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="10-Year DV, No Fixed Effects")
+segments(	x0=summary(marg10_nofe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg10_nofe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1])
+points(x=summary(marg10_nofe)$agepre[l2:len],y=summary(marg10_nofe)$AME[l2:len],pch=20,col="gray")
+segments(	x0=summary(marg10_nofe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg10_nofe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1],col="gray")
+abline(h=0)
+legend(41,9,c("Non-Personalist","Personalist"), pch=19,col=c("black","gray"),text.font=3,cex=0.8)
+
+
+len<-nrow(summary(marg10_fe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg10_fe,l1,0,0.9)
+confintty1<-confi(marg10_fe,l1,1,0.9)
+plot(x=summary(marg10_fe)$agepre[1:l1],y=summary(marg10_fe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="10-Year DV, Fixed Effects")
+segments(	x0=summary(marg10_fe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg10_fe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1])
+points(x=summary(marg10_fe)$agepre[l2:len],y=summary(marg10_fe)$AME[l2:len],pch=20,col="gray")
+segments(	x0=summary(marg10_fe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg10_fe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1],col="gray")
+abline(h=0)
+legend(41,9,c("Non-Personalist","Personalist"), pch=19,col=c("black","gray"),text.font=3,cex=0.8)
+
+dev.off()
+
+```
+
+```{r}
+
+### Replication of Figure 5
+
+#Ultimate fate of dictators, by regime type (Figure 5 in Main Article)
+
+nondem<-subset(data,polity_lag1<0)
+nondem<-subset(nondem, is.na(death)==FALSE )
+subby<-nondem
+subby$keep<-subby$otherexit
+subby$keep<-ifelse(subby$death==1,1,subby$keep)
+subby<-subset(subby,keep==1)
+
+
+#subby<-merge(subby,leaders,all.x=TRUE,all.y=FALSE)
+
+death<-subset(nondem,death==1)
+age<-quantile(death$agepre,c(0.25,0.5,0.75),na.rm=TRUE)
+
+age0<-subset(subby,agepre<=54)
+
+age25<-subset(subby,agepre>54)
+age25<-subset(age25,agepre<=64)
+
+age50<-subset(subby,subby$agepre>64)
+age50<-subset(age50,age50$agepre<=73)
+
+age75<-subset(subby,agepre>73)
+
+
+#non personalist
+
+age0x<-subset(age0,personal==0)
+age25x<-subset(age25,personal==0)
+age50x<-subset(age50,personal==0)
+age75x<-subset(age75,personal==0)
+
+death0<-nrow(subset(age0x,death==1))
+s1<-subset(age0x,democracy==1)
+s2<-subset(age0x,democracy==0)
+irreg0<-nrow(subset(s2,otherirreg==1))
+reg0<-subset(s2,otherexit==1)
+reg0<-nrow(subset(reg0,otherirreg==0))
+dem0<-nrow(subset(s1,death==0))
+
+death25<-nrow(subset(age25x,death==1))
+s1<-subset(age25x,democracy==1)
+s2<-subset(age25x,democracy==0)
+irreg25<-nrow(subset(s2,otherirreg==1))
+reg25<-subset(s2,otherexit==1)
+reg25<-nrow(subset(reg25,otherirreg==0))
+dem25<-nrow(subset(s1,death==0))
+
+death50<-nrow(subset(age50x,death==1))
+s1<-subset(age50x,democracy==1)
+s2<-subset(age50x,democracy==0)
+irreg50<-nrow(subset(s2,otherirreg==1))
+reg50<-subset(s2,otherexit==1)
+reg50<-nrow(subset(reg50,otherirreg==0))
+dem50<-nrow(subset(s1,death==0))
+
+death75<-nrow(subset(age75x,death==1))
+s1<-subset(age75x,democracy==1)
+s2<-subset(age75x,democracy==0)
+irreg75<-nrow(subset(s2,otherirreg==1))
+reg75<-subset(s2,otherexit==1)
+reg75<-nrow(subset(reg75,otherirreg==0))
+dem75<-nrow(subset(s1,death==0))
+
+death<-c(death0,death25,death50,death75)
+irreg<-c(irreg0,irreg25,irreg50,irreg75)
+reg<-c(reg0,reg25,reg50,reg75)
+dem<-c(dem0,dem25,dem50,dem75)
+
+noper_exit<-data.frame(death,irreg,reg,dem)
+
+
+# personal
+age0x<-subset(age0,personal==1)
+age25x<-subset(age25,personal==1)
+age50x<-subset(age50,personal==1)
+age75x<-subset(age75,personal==1)
+
+death0<-nrow(subset(age0x,death==1))
+s1<-subset(age0x,democracy==1)
+s2<-subset(age0x,democracy==0)
+irreg0<-nrow(subset(s2,otherirreg==1))
+reg0<-subset(s2,otherexit==1)
+reg0<-nrow(subset(reg0,otherirreg==0))
+dem0<-nrow(subset(s1,death==0))
+
+death25<-nrow(subset(age25x,death==1))
+s1<-subset(age25x,democracy==1)
+s2<-subset(age25x,democracy==0)
+irreg25<-nrow(subset(s2,otherirreg==1))
+reg25<-subset(s2,otherexit==1)
+reg25<-nrow(subset(reg25,otherirreg==0))
+dem25<-nrow(subset(s1,death==0))
+
+death50<-nrow(subset(age50x,death==1))
+s1<-subset(age50x,democracy==1)
+s2<-subset(age50x,democracy==0)
+irreg50<-nrow(subset(s2,otherirreg==1))
+reg50<-subset(s2,otherexit==1)
+reg50<-nrow(subset(reg50,otherirreg==0))
+dem50<-nrow(subset(s1,death==0))
+
+death75<-nrow(subset(age75x,death==1))
+s1<-subset(age75x,democracy==1)
+s2<-subset(age75x,democracy==0)
+irreg75<-nrow(subset(s2,otherirreg==1))
+reg75<-subset(s2,otherexit==1)
+reg75<-nrow(subset(reg75,otherirreg==0))
+dem75<-nrow(subset(s1,death==0))
+
+death<-c(death0,death25,death50,death75)
+irreg<-c(irreg0,irreg25,irreg50,irreg75)
+reg<-c(reg0,reg25,reg50,reg75)
+dem<-c(dem0,dem25,dem50,dem75)
+
+per_exit<-data.frame(death,irreg,reg,dem)
+
+
+y<-per_exit
+
+x0<-sum(y[1,])+sum(y[2,])+sum(y[3,])+sum(y[4,])
+x25<-sum(y[2,])+sum(y[3,])+sum(y[4,])
+x50<-sum(y[3,])+sum(y[4,])
+x75<-sum(y[4,])
+
+a0<-c(sum(y[,1])/x0,sum(y[,2])/x0,sum(y[,3])/x0,sum(y[,4])/x0)
+y<-y[-1,]
+a25<-c(sum(y[,1])/x25,sum(y[,2])/x25,sum(y[,3])/x25,sum(y[,4])/x25)
+y<-y[-1,]
+a50<-c(sum(y[,1])/x50,sum(y[,2])/x50,sum(y[,3])/x50,sum(y[,4])/x50)
+y<-y[-1,]
+a75<-c(sum(y[,1])/x75,sum(y[,2])/x75,sum(y[,3])/x75,sum(y[,4])/x75)
+
+per_perc<-rbind(a0,a25,a50,a75)
+colnames(per_perc)<-c("death","irreg","reg","dem")
+
+y<-noper_exit
+
+x0<-sum(y[1,])+sum(y[2,])+sum(y[3,])+sum(y[4,])
+x25<-sum(y[2,])+sum(y[3,])+sum(y[4,])
+x50<-sum(y[3,])+sum(y[4,])
+x75<-sum(y[4,])
+
+a0<-c(sum(y[,1])/x0,sum(y[,2])/x0,sum(y[,3])/x0,sum(y[,4])/x0)
+y<-y[-1,]
+a25<-c(sum(y[,1])/x25,sum(y[,2])/x25,sum(y[,3])/x25,sum(y[,4])/x25)
+y<-y[-1,]
+a50<-c(sum(y[,1])/x50,sum(y[,2])/x50,sum(y[,3])/x50,sum(y[,4])/x50)
+y<-y[-1,]
+a75<-c(sum(y[,1])/x75,sum(y[,2])/x75,sum(y[,3])/x75,sum(y[,4])/x75)
+
+noper_perc<-rbind(a0,a25,a50,a75)
+colnames(noper_perc)<-c("death","irreg","reg","dem")
+
+personalist<-c(per_perc[3,1],per_perc[3,2],per_perc[3,3],per_perc[3,4])
+nonpersonalist<-c(noper_perc[3,1],noper_perc[3,2],noper_perc[3,3],noper_perc[3,4])
+
+plotty<-data.frame(personalist, nonpersonalist)
+plotty<-as.matrix(plotty)
+
+png(file="../graphics/fig5.png")
+barplot(height=plotty,col=c("black","darkgrey","lightgrey","white"), beside=T, legend=c("death","irreg","reg","dem"), ylim=c(0,0.6))
+dev.off()
+
+
+```
+
+```{r}
+
+### Replication of Figure 6
+
+####  H2b Analyses: Effect of leader age on likelihood of removal
+
+
+### Logit analyses (Appendix, Table 26)
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+
+
+per<-subset(nondem,personal_lag1==1)
+mil<-subset(nondem,military_lag1==1)
+mon<-subset(nondem,monarchy_lag1==1)
+par<-subset(nondem,party_lag1==1)
+
+
+d<-nondem
+m1 <- glm(allcoup_bin~agepre+personal_lag1 + polity_lag1 + allcoup_count_lag10,data=nondem,family=binomial(link=logit))
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+m2 <- glm(allcoup_bin~agepre*personal_lag1 + polity_lag1 + allcoup_count_lag10,data=nondem,family=binomial(link=logit))
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+plotty1<-m2
+
+m3<-clogit(allcoup_bin~agepre*personal_lag1 + polity_lag1+allcoup_count_lag10+strata(year),data=nondem)
+se3<-sqrt(diag(vcov(m3)))
+
+
+m4 <- glm(otherirreg~agepre+personal_lag1  + polity_lag1+ allcoup_count_lag10,data=nondem,family=binomial(link=logit))
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+
+m5 <- glm(otherirreg~agepre*personal_lag1  + polity_lag1+ allcoup_count_lag10 ,data=nondem,family=binomial(link=logit))
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+plotty2<-m5
+
+m6<-clogit(otherirreg~agepre*personal_lag1+ polity_lag1+ allcoup_count_lag10  +strata(year),data=nondem)
+se6<-sqrt(diag(vcov(m6)))
+
+
+##Logit analyses, tenure sepecification (Appendix, Table 27)
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+
+
+per<-subset(nondem,personal_lag1==1)
+mil<-subset(nondem,military_lag1==1)
+mon<-subset(nondem,monarchy_lag1==1)
+par<-subset(nondem,party_lag1==1)
+
+
+d<-nondem
+m1 <- glm(allcoup_bin~agepre+personal_lag1 + tenpre+polity_lag1 + allcoup_count_lag10,data=nondem,family=binomial(link=logit))
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+m2 <- glm(allcoup_bin~agepre*personal_lag1 + tenpre+polity_lag1 + allcoup_count_lag10,data=nondem,family=binomial(link=logit))
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+
+m3<-clogit(allcoup_bin~agepre*personal_lag1 + tenpre+polity_lag1+allcoup_count_lag10+strata(year),data=nondem)
+se3<-sqrt(diag(vcov(m3)))
+
+m4 <- glm(otherirreg~agepre+personal_lag1  + tenpre+polity_lag1+allcoup_count_lag10,data=nondem,family=binomial(link=logit))
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+m5 <- glm(otherirreg~agepre*personal_lag1  + tenpre+polity_lag1+allcoup_count_lag10 ,data=nondem,family=binomial(link=logit))
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+m6<-clogit(otherirreg~agepre*personal_lag1+ tenpre+polity_lag1 +allcoup_count_lag10 +strata(year),data=nondem)
+se6<-sqrt(diag(vcov(m3)))
+
+## Figure for H2b (Figure 6 in Main Article)
+png(file="../graphics/fig6.png")
+par(mfrow=c(2,1))
+
+p1<-mean(nondem$polity_lag1,na.rm=TRUE)
+coup<-mean(nondem$allcoup_count_lag10,na.rm=TRUE)
+nondemd<-subset(nondem,death==1)
+age<-seq(quantile(nondemd$agepre,0.1, na.rm=TRUE),quantile(nondemd$agepre,0.9,na.rm=TRUE),1)
+
+eff1<-predict(plotty1, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=1),type="link",se.fit=TRUE)
+up <- eff1$fit + 2*eff1$se.fit
+low <- eff1$fit - 2*eff1$se.fit
+upper_p<- exp(up)/(1+exp(up))
+lower_p<- exp(low)/(1+exp(low))
+eff1_p<-predict(plotty1, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=1),type="response")
+
+eff1<-predict(plotty1, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=0),type="link",se.fit=TRUE)
+up <- eff1$fit + 2*eff1$se.fit
+low <- eff1$fit - 2*eff1$se.fit
+upper_n <- exp(up)/(1+exp(up))
+lower_n<- exp(low)/(1+exp(low))
+eff1_n<-predict(plotty1, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=0),type="response")
+
+
+plot(age,eff1_p,ylim=c(0,0.4),type="l",ylab="Predicted Probability",xlab="Leader Age",main="DV: Attempted Coup")
+cord.x<-c(age[1],age[1],age,age[length(age)],age[length(age)],rev(age))
+cord.y<-c(upper_p[1],lower_p[1],lower_p,lower_p[length(age)],upper_p[length(age)],rev(upper_p))
+polygon(cord.x,cord.y,col=rgb(0,0,0,alpha=0.6))
+lines(age,eff1_n)
+cord.x<-c(age[1],age[1],age,age[length(age)],age[length(age)],rev(age))
+cord.y<-c(upper_n[1],lower_n[1],lower_n,lower_n[length(age)],upper_n[length(age)],rev(upper_n))
+polygon(cord.x,cord.y,col=rgb(0,0,0,alpha=0.3))
+legend(52,0.385,c("Personalist","Non-Personalist"), pch=19,col=c(rgb(0,0,0,alpha=0.6),rgb(0,0,0,alpha=0.3)),text.font=3,cex=0.8)
+
+
+p1<-mean(nondem$polity_lag1,na.rm=TRUE)
+coup<-mean(nondem$allcoup_count_lag10,na.rm=TRUE)
+nondemd<-subset(nondem,death==1)
+age<-seq(quantile(nondemd$agepre,0.1, na.rm=TRUE),quantile(nondemd$agepre,0.9,na.rm=TRUE),1)
+
+eff1<-predict(plotty2, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=1),type="link",se.fit=TRUE)
+up <- eff1$fit + 2*eff1$se.fit
+low <- eff1$fit - 2*eff1$se.fit
+upper_p<- exp(up)/(1+exp(up))
+lower_p<- exp(low)/(1+exp(low))
+eff1_p<-predict(plotty2, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=1),type="response")
+
+eff1<-predict(plotty2, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=0),type="link",se.fit=TRUE)
+up <- eff1$fit + 2*eff1$se.fit
+low <- eff1$fit - 2*eff1$se.fit
+upper_n <- exp(up)/(1+exp(up))
+lower_n<- exp(low)/(1+exp(low))
+eff1_n<-predict(plotty2, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=0),type="response")
+
+
+plot(age,eff1_p,ylim=c(0,0.4),type="l",ylab="Predicted Probability",xlab="Leader Age",main="DV: Irregular Exit")
+cord.x<-c(age[1],age[1],age,age[length(age)],age[length(age)],rev(age))
+cord.y<-c(upper_p[1],lower_p[1],lower_p,lower_p[length(age)],upper_p[length(age)],rev(upper_p))
+polygon(cord.x,cord.y,col=rgb(0,0,0,alpha=0.6))
+lines(age,eff1_n)
+cord.x<-c(age[1],age[1],age,age[length(age)],age[length(age)],rev(age))
+cord.y<-c(upper_n[1],lower_n[1],lower_n,lower_n[length(age)],upper_n[length(age)],rev(upper_n))
+polygon(cord.x,cord.y,col=rgb(0,0,0,alpha=0.3))
+legend(52,0.385,c("Personalist","Non-Personalist"), pch=19,col=c(rgb(0,0,0,alpha=0.6),rgb(0,0,0,alpha=0.3)),text.font=3,cex=0.8)
+
+dev.off()
+
+```
+
+
 
