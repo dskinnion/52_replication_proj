@@ -1,0 +1,973 @@
+---
+title: "Hummel Replication"
+author: "Dominic Skinnion"
+date: "4/29/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(MASS)
+library(margins)
+library(clubSandwich)
+library(stargazer)
+library(survival)
+```
+
+```{r, echo = FALSE}
+
+data<-read.csv("datafull_190123.csv")
+data<-data[-c(1)]
+
+### Summary Statistics (Appendix, Table 1)
+
+sumstats<-data[,c("polity2","regimechange","democracy","death","agepre","agepost","tenpre","tenpost","gdppcln","personal","otherirreg","allcoup_bin")]
+#stargazer(sumstats,out="sumstats", label="tab:sumstats",title="Summary Statistics")
+
+
+### H0 Analysis - effect of leader death on different measures of political change.  
+
+#DV: Polity
+
+#1-year DV (Appendix, Table 2)
+
+nondem<-subset(data,polity_lag1<0)
+nondem<-subset(nondem, is.na(death)==FALSE )
+
+d1<-subset(nondem,death_for1==0 )
+d1<-subset(d1,is.na(polity_for1)==FALSE)
+
+d<-d1
+m1<- lm(polity_for1~death,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE)
+m2<- lm(polity_for1~death+polity_lag1,data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m2)
+pol1_noage_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- lm(polity_for1~death+agepre+polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m3)
+pol1_age_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(polity_for1) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m4<- lm(polity_for1~death+agepre+polity_lag1,data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m5<- lm(polity_for1~death+agepre+tenpre+polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+
+d1<-subset(d1,is.na(ccode)==FALSE &is.na(year)==FALSE)
+d<-d1
+m6<- lm(polity_for1~death+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE)
+m7<- lm(polity_for1~death+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m7,cluster=d$ccode,type="CR1")
+se7<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m7)
+pol1_noage_fe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m8<- lm(polity_for1~death+agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m8,cluster=d$ccode,type="CR1")
+se8<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m8)
+pol1_age_fe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(polity_for1) ==FALSE & is.na(ccode)==FALSE &is.na(year)==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m9<- lm(polity_for1~death+agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m9,cluster=d$ccode,type="CR1")
+se9<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m10<- lm(polity_for1~death+agepre+tenpre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m10,cluster=d$ccode,type="CR1")
+se10<-sqrt(diag(vc))
+
+plotty_pol1<-rbind(pol1_noage_nofe,pol1_age_nofe,pol1_noage_fe,pol1_age_fe)
+
+
+
+#5-year DV (Appendix, Table 3)
+
+
+nondem<-subset(data,polity_lag1<0)
+nondem<-subset(nondem, is.na(death)==FALSE )
+
+d5<-subset(nondem,death_for5==0 )
+d5<-subset(d5,is.na(polity_for5)==FALSE)
+
+d<-d5
+m1<- lm(polity_for5~death,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE)
+m2<- lm(polity_for5~death+polity_lag1,data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m2)
+pol5_noage_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- lm(polity_for5~death+agepre+polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m3)
+pol5_age_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(polity_for5) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m4<- lm(polity_for5~death+agepre+polity_lag1,data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m5<- lm(polity_for5~death+agepre+tenpre+polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+
+d5<-subset(d5,is.na(ccode)==FALSE &is.na(year)==FALSE)
+
+d<-d5
+m6<- lm(polity_for5~death+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE)
+m7<- lm(polity_for5~death+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m7,cluster=d$ccode,type="CR1")
+se7<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m7)
+pol5_noage_fe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m8<- lm(polity_for5~death+agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m8,cluster=d$ccode,type="CR1")
+se8<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m8)
+pol5_age_fe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(polity_for5) ==FALSE & is.na(ccode)==FALSE &is.na(year)==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m9<- lm(polity_for5~death+agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m9,cluster=d$ccode,type="CR1")
+se9<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m10<- lm(polity_for5~death+agepre+tenpre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m10,cluster=d$ccode,type="CR1")
+se10<-sqrt(diag(vc))
+
+plotty_pol5<-rbind(pol5_noage_nofe,pol5_age_nofe,pol5_noage_fe,pol5_age_fe)
+
+
+
+#10-year DV (Appendix, Table 4)
+
+
+nondem<-subset(data,polity_lag1<0)
+nondem<-subset(nondem, is.na(death)==FALSE )
+
+d10<-subset(nondem,death_for10==0 )
+d10<-subset(d10,is.na(polity_for10)==FALSE)
+
+d<-d10
+m1<- lm(polity_for10~death,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE)
+m2<- lm(polity_for10~death+polity_lag1,data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m2)
+pol10_noage_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- lm(polity_for10~death+agepre+polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m3)
+pol10_age_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(polity_for10) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m4<- lm(polity_for10~death+agepre+polity_lag1,data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m5<- lm(polity_for10~death+agepre+tenpre+polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+
+d10<-subset(d10,is.na(ccode)==FALSE &is.na(year)==FALSE)
+
+d<-d10
+m6<- lm(polity_for10~death+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE)
+m7<- lm(polity_for10~death+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m7,cluster=d$ccode,type="CR1")
+se7<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m7)
+pol10_noage_fe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m8<- lm(polity_for10~death+agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m8,cluster=d$ccode,type="CR1")
+se8<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m8)
+pol10_age_fe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(polity_for10) ==FALSE & is.na(ccode)==FALSE &is.na(year)==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m9<- lm(polity_for10~death+agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m9,cluster=d$ccode,type="CR1")
+se9<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m10<- lm(polity_for10~death+agepre+tenpre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m10,cluster=d$ccode,type="CR1")
+se10<-sqrt(diag(vc))
+
+plotty_pol10<-rbind(pol10_noage_nofe,pol10_age_nofe,pol10_noage_fe,pol10_age_fe)
+
+
+
+
+## DV: Democratization 
+
+
+#1-year DV (Appendix, Table 5)
+
+nondem<-subset(data,democracy_lag1==0)
+nondem<-subset(nondem, is.na(death)==FALSE )
+
+d1<-subset(nondem,death_for1==0 )
+d1<-subset(d1,is.na(democracy_for1)==FALSE)
+
+d<-d1
+m1<- glm(democracy_for1~death,data=d,family=binomial(link=logit))
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE)
+m2<- glm(democracy_for1~death+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m2)
+dem1_noage_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- glm(democracy_for1~death+agepre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m3)
+dem1_age_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(democracy_for1) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m4<- glm(democracy_for1~death+agepre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m5<- glm(democracy_for1~death+agepre+tenpre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+
+d1<-subset(d1,is.na(ccode)==FALSE &is.na(year)==FALSE)
+
+d<-d1
+m6<- clogit(democracy_for1~death+strata(ccode),data=d)
+
+d<-subset(d1,is.na(polity_lag1)==FALSE)
+m7<- clogit(democracy_for1~death+polity_lag1+strata(ccode),data=d)
+coef<-coefficients(m7)[1]
+se<-coef(summary(m7))[1,3]
+dem1_noage_fe<-c(coef,coef+1.96*se,coef-1.96*se)
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m8<- clogit(democracy_for1~death+agepre+polity_lag1+strata(ccode),data=d)
+coef<-coefficients(m8)[1]
+se<-coef(summary(m8))[1,3]
+dem1_age_fe<-c(coef,coef+1.96*se,coef-1.96*se)
+
+d<-subset(nondem,is.na(democracy_for1) ==FALSE & is.na(ccode)==FALSE &is.na(year)==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m9<- clogit(democracy_for1~death+agepre+polity_lag1+strata(ccode),data=d)
+
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m10<- clogit(democracy_for1~death+agepre+tenpre+polity_lag1+strata(ccode),data=d)
+
+
+plotty_dem1<-rbind(dem1_noage_nofe,dem1_age_nofe,dem1_noage_fe,dem1_age_fe)
+
+
+## 5-year DV (Appendix, Table 6)
+
+nondem<-subset(data,democracy_lag1==0)
+nondem<-subset(nondem, is.na(death)==FALSE )
+
+d5<-subset(nondem,death_for5==0 )
+d5<-subset(d5,is.na(democracy_for5)==FALSE)
+
+d<-d5
+m1<- glm(democracy_for5~death,data=d,family=binomial(link=logit))
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE)
+m2<- glm(democracy_for5~death+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m2)
+dem5_noage_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- glm(democracy_for5~death+agepre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m3)
+dem5_age_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(democracy_for5) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m4<- glm(democracy_for5~death+agepre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m5<- glm(democracy_for5~death+agepre+tenpre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+
+d5<-subset(d5,is.na(ccode)==FALSE &is.na(ccode)==FALSE)
+
+d<-d5
+m6<- clogit(democracy_for5~death+strata(ccode),data=d)
+
+d<-subset(d5,is.na(polity_lag1)==FALSE)
+m7<- clogit(democracy_for5~death+polity_lag1+strata(ccode),data=d)
+coef<-coefficients(m7)[1]
+se<-coef(summary(m7))[1,3]
+dem5_noage_fe<-c(coef,coef+1.96*se,coef-1.96*se)
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m8<- clogit(democracy_for5~death+agepre+polity_lag1+strata(ccode),data=d)
+coef<-coefficients(m8)[1]
+se<-coef(summary(m8))[1,3]
+dem5_age_fe<-c(coef,coef+1.96*se,coef-1.96*se)
+
+
+d<-subset(nondem,is.na(democracy_for5) ==FALSE & is.na(ccode)==FALSE &is.na(year)==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m9<- clogit(democracy_for5~death+agepre+polity_lag1+strata(ccode),data=d)
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m10<- clogit(democracy_for5~death+agepre+tenpre+polity_lag1+strata(ccode),data=d)
+
+plotty_dem5<-rbind(dem5_noage_nofe,dem5_age_nofe,dem5_noage_fe,dem5_age_fe)
+
+
+## 10-year DV (Appendix, Table 7)
+
+nondem<-subset(data,democracy_lag1==0)
+nondem<-subset(nondem, is.na(death)==FALSE )
+
+d10<-subset(nondem,death_for10==0 )
+d10<-subset(d10,is.na(democracy_for10)==FALSE)
+
+d<-d10
+m1<- glm(democracy_for10~death,data=d,family=binomial(link=logit))
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE)
+m2<- glm(democracy_for10~death+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m2)
+dem10_noage_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- glm(democracy_for10~death+agepre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m3)
+dem10_age_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(democracy_for10) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m4<- glm(democracy_for10~death+agepre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m5<- glm(democracy_for10~death+agepre+tenpre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+
+d5<-subset(d10,is.na(ccode)==FALSE &is.na(ccode)==FALSE)
+
+d<-d10
+m6<- clogit(democracy_for10~death+strata(ccode),data=d)
+
+d<-subset(d10,is.na(polity_lag1)==FALSE)
+m7<- clogit(democracy_for10~death+polity_lag1+strata(ccode),data=d)
+coef<-coefficients(m7)[1]
+se<-coef(summary(m7))[1,3]
+dem10_noage_fe<-c(coef,coef+1.96*se,coef-1.96*se)
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m8<- clogit(democracy_for10~death+agepre+polity_lag1+strata(ccode),data=d)
+coef<-coefficients(m8)[1]
+se<-coef(summary(m8))[1,3]
+dem10_age_fe<-c(coef,coef+1.96*se,coef-1.96*se)
+
+
+d<-subset(nondem,is.na(democracy_for10) ==FALSE & is.na(ccode)==FALSE &is.na(year)==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m9<- clogit(democracy_for10~death+agepre+polity_lag1+strata(ccode),data=d)
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m10<- clogit(democracy_for10~death+agepre+tenpre+polity_lag1+strata(ccode),data=d)
+
+plotty_dem10<-rbind(dem10_noage_nofe,dem10_age_nofe,dem10_noage_fe,dem10_age_fe)
+
+
+### Regime Change
+
+## 1-Year DV (Appendix, Table 8)
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+nondem<-subset(nondem, is.na(death)==FALSE )
+
+d1<-subset(nondem,death_for1==0 )
+d1<-subset(d1,is.na(regimechange_for1)==FALSE)
+
+d<-d1
+m1<- glm(regimechange_for1~death,data=d,family=binomial(link=logit))
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE)
+m2<- glm(regimechange_for1~death+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m2)
+rc1_noage_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- glm(regimechange_for1~death+agepre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m3)
+rc1_age_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(regimechange_for1) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m4<- glm(regimechange_for1~death+agepre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m5<- glm(regimechange_for1~death+agepre+tenpre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+
+d1<-subset(d1,is.na(ccode)==FALSE &is.na(year)==FALSE)
+
+d<-d1
+m6<- clogit(regimechange_for1~death+strata(ccode),data=d)
+
+d<-subset(d1,is.na(polity_lag1)==FALSE)
+m7<- clogit(regimechange_for1~death+polity_lag1+strata(ccode),data=d)
+coef<-coefficients(m7)[1]
+se<-coef(summary(m7))[1,3]
+rc1_noage_fe<-c(coef,coef+1.96*se,coef-1.96*se)
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m8<- clogit(regimechange_for1~death+agepre+polity_lag1+strata(ccode),data=d)
+coef<-coefficients(m8)[1]
+se<-coef(summary(m8))[1,3]
+rc1_age_fe<-c(coef,coef+1.96*se,coef-1.96*se)
+
+d<-subset(nondem,is.na(regimechange_for1) ==FALSE & is.na(ccode)==FALSE &is.na(year)==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m9<- clogit(democracy_for1~death+agepre+polity_lag1+strata(ccode),data=d)
+
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m10<- clogit(regimechange_for1~death+agepre+tenpre+polity_lag1+strata(ccode),data=d)
+
+
+plotty_rc1<-rbind(rc1_noage_nofe,rc1_age_nofe,rc1_noage_fe,rc1_age_fe)
+
+
+## 5-Yr DV (Appendix, Table 5)
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+nondem<-subset(nondem, is.na(death)==FALSE )
+
+d5<-subset(nondem,death_for5==0 )
+d5<-subset(d5,is.na(regimechange_for5)==FALSE)
+
+d<-d5
+m1<- glm(regimechange_for5~death,data=d,family=binomial(link=logit))
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE)
+m2<- glm(regimechange_for5~death+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m2)
+rc5_noage_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- glm(regimechange_for5~death+agepre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m3)
+rc5_age_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(regimechange_for5) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m4<- glm(regimechange_for5~death+agepre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m5<- glm(regimechange_for5~death+agepre+tenpre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+d5<-subset(d5,is.na(ccode)==FALSE &is.na(year)==FALSE)
+d<-d5
+
+m6<- clogit(regimechange_for5~death+strata(ccode),data=d)
+
+d<-subset(d5,is.na(polity_lag1)==FALSE)
+m7<- clogit(regimechange_for5~death+polity_lag1+strata(ccode),data=d)
+coef<-coefficients(m7)[1]
+se<-coef(summary(m7))[1,3]
+rc5_noage_fe<-c(coef,coef+1.96*se,coef-1.96*se)
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m8<- clogit(regimechange_for5~death+agepre+polity_lag1+strata(ccode),data=d)
+coef<-coefficients(m8)[1]
+se<-coef(summary(m8))[1,3]
+rc5_age_fe<-c(coef,coef+1.96*se,coef-1.96*se)
+
+d<-subset(nondem,is.na(regimechange_for5) ==FALSE & is.na(ccode)==FALSE &is.na(year)==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m9<- clogit(democracy_for5~death+agepre+polity_lag1+strata(ccode),data=d)
+
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m10<- clogit(regimechange_for5~death+agepre+tenpre+polity_lag1+strata(ccode),data=d)
+
+
+plotty_rc5<-rbind(rc5_noage_nofe,rc5_age_nofe,rc5_noage_fe,rc5_age_fe)
+
+
+## 10-yr DV (Appendix, Table 10)
+
+
+nondem<-subset(data,military_lag1==1 |monarchy_lag1==1|personal_lag1==1|party_lag1==1)
+nondem<-subset(nondem, is.na(death)==FALSE )
+
+d10<-subset(nondem,death_for10==0 )
+d10<-subset(d10,is.na(regimechange_for10)==FALSE)
+
+d<-d10
+m1<- glm(regimechange_for10~death,data=d,family=binomial(link=logit))
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE)
+m2<- glm(regimechange_for10~death+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m2)
+rc10_noage_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- glm(regimechange_for10~death+agepre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m3)
+rc10_age_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(regimechange_for10) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m4<- glm(regimechange_for10~death+agepre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m5<- glm(regimechange_for10~death+agepre+tenpre+polity_lag1,data=d,family=binomial(link=logit))
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+d5<-subset(d10,is.na(ccode)==FALSE &is.na(year)==FALSE)
+d<-d10
+
+m6<- clogit(regimechange_for10~death+strata(ccode),data=d)
+
+d<-subset(d10,is.na(polity_lag1)==FALSE)
+m7<- clogit(regimechange_for10~death+polity_lag1+strata(ccode),data=d)
+coef<-coefficients(m7)[1]
+se<-coef(summary(m7))[1,3]
+rc10_noage_fe<-c(coef,coef+1.96*se,coef-1.96*se)
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m8<- clogit(regimechange_for10~death+agepre+polity_lag1+strata(ccode),data=d)
+coef<-coefficients(m8)[1]
+se<-coef(summary(m8))[1,3]
+rc10_age_fe<-c(coef,coef+1.96*se,coef-1.96*se)
+
+d<-subset(nondem,is.na(regimechange_for10) ==FALSE & is.na(ccode)==FALSE &is.na(year)==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m9<- clogit(democracy_for10~death+agepre+polity_lag1+strata(ccode),data=d)
+
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m10<- clogit(regimechange_for10~death+agepre+tenpre+polity_lag1+strata(ccode),data=d)
+
+
+plotty_rc10<-rbind(rc10_noage_nofe,rc10_age_nofe,rc10_noage_fe,rc10_age_fe)
+
+
+### Absolute change in polity
+
+
+#1-year DV (Appendix, Table 11)
+
+nondem<-subset(data,polity_lag1<0)
+nondem<-subset(nondem, is.na(death)==FALSE )
+
+d1<-subset(nondem,death_for1==0 )
+d1<-subset(d1,is.na(abspolchange_for1)==FALSE)
+
+d<-d1
+m1<- lm(abspolchange_for1~death,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE)
+m2<- lm(abspolchange_for1~death+polity_lag1,data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m2)
+abs1_noage_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- lm(abspolchange_for1~death+agepre+polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m3)
+abs1_age_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(abspolchange_for1) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m4<- lm(abspolchange_for1~death+agepre+polity_lag1,data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m5<- lm(abspolchange_for1~death+agepre+tenpre+polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+d1<-subset(d1,is.na(ccode)==FALSE &is.na(year)==FALSE)
+d<-d1
+m6<- lm(abspolchange_for1~death+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE)
+m7<- lm(abspolchange_for1~death+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m7,cluster=d$ccode,type="CR1")
+se7<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m7)
+abs1_noage_fe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m8<- lm(abspolchange_for1~death+agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m8,cluster=d$ccode,type="CR1")
+se8<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m8)
+abs1_age_fe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(polity_for1) ==FALSE & is.na(ccode)==FALSE &is.na(year)==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m9<- lm(abspolchange_for1~death+agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m9,cluster=d$ccode,type="CR1")
+se9<-sqrt(diag(vc))
+
+d<-subset(d1,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m10<- lm(abspolchange_for1~death+agepre+tenpre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m10,cluster=d$ccode,type="CR1")
+se10<-sqrt(diag(vc))
+
+plotty_abs1<-rbind(abs1_noage_nofe,abs1_age_nofe,abs1_noage_fe,abs1_age_fe)
+
+
+
+#5-year DV (Appendix, Table 12)
+
+nondem<-subset(data,polity_lag1<0)
+nondem<-subset(nondem, is.na(death)==FALSE )
+
+d5<-subset(nondem,death_for5==0 )
+d5<-subset(d5,is.na(abspolchange_for5)==FALSE)
+
+d<-d5
+m1<- lm(abspolchange_for5~death,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE)
+m2<- lm(abspolchange_for5~death+polity_lag1,data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m2)
+abs5_noage_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- lm(abspolchange_for5~death+agepre+polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m3)
+abs5_age_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(abspolchange_for5) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m4<- lm(abspolchange_for5~death+agepre+polity_lag1,data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m5<- lm(abspolchange_for5~death+agepre+tenpre+polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+d5<-subset(d1,is.na(ccode)==FALSE &is.na(year)==FALSE)
+d<-d5
+m6<- lm(abspolchange_for5~death+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE)
+m7<- lm(abspolchange_for5~death+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m7,cluster=d$ccode,type="CR1")
+se7<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m7)
+abs5_noage_fe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m8<- lm(abspolchange_for5~death+agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m8,cluster=d$ccode,type="CR1")
+se8<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m8)
+abs5_age_fe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(polity_for5) ==FALSE & is.na(ccode)==FALSE &is.na(year)==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m9<- lm(abspolchange_for5~death+agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m9,cluster=d$ccode,type="CR1")
+se9<-sqrt(diag(vc))
+
+d<-subset(d5,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m10<- lm(abspolchange_for5~death+agepre+tenpre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m10,cluster=d$ccode,type="CR1")
+se10<-sqrt(diag(vc))
+
+plotty_abs5<-rbind(abs5_noage_nofe,abs5_age_nofe,abs5_noage_fe,abs5_age_fe)
+
+
+## 10 year DV (Appendix, Table 13)
+
+nondem<-subset(data,polity_lag1<0)
+nondem<-subset(nondem, is.na(death)==FALSE )
+
+d10<-subset(nondem,death_for5==0 )
+d10<-subset(d10,is.na(abspolchange_for10)==FALSE)
+
+d<-d10
+m1<- lm(abspolchange_for10~death,data=d)
+vc<-vcovCR(m1,cluster=d$ccode,type="CR1")
+se1<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE)
+m2<- lm(abspolchange_for10~death+polity_lag1,data=d)
+vc<-vcovCR(m2,cluster=d$ccode,type="CR1")
+se2<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m2)
+abs10_noage_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m3<- lm(abspolchange_for10~death+agepre+polity_lag1,data=d)
+vc<-vcovCR(m3,cluster=d$ccode,type="CR1")
+se3<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m3)
+abs10_age_nofe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(abspolchange_for10) ==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m4<- lm(abspolchange_for10~death+agepre+polity_lag1,data=d)
+vc<-vcovCR(m4,cluster=d$ccode,type="CR1")
+se4<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m5<- lm(abspolchange_for10~death+agepre+tenpre+polity_lag1,data=d)
+vc<-vcovCR(m5,cluster=d$ccode,type="CR1")
+se5<-sqrt(diag(vc))
+
+d10<-subset(d10,is.na(ccode)==FALSE &is.na(year)==FALSE)
+d<-d10
+m6<- lm(abspolchange_for10~death+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
+se6<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE)
+m7<- lm(abspolchange_for10~death+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m7,cluster=d$ccode,type="CR1")
+se7<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m7)
+abs10_noage_fe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m8<- lm(abspolchange_for10~death+agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m8,cluster=d$ccode,type="CR1")
+se8<-sqrt(diag(vc))
+se<-sqrt(diag(vc))
+coef<-coefficients(m8)
+abs10_age_fe<-c(coef[2],coef[2]+1.96*se[2],coef[2]-1.96*se[2])
+
+d<-subset(nondem,is.na(polity_for10) ==FALSE & is.na(ccode)==FALSE &is.na(year)==FALSE & is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE)
+m9<- lm(abspolchange_for10~death+agepre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m9,cluster=d$ccode,type="CR1")
+se9<-sqrt(diag(vc))
+
+d<-subset(d10,is.na(polity_lag1)==FALSE & is.na(agepre)==FALSE &is.na(tenpre)==FALSE)
+m10<- lm(abspolchange_for10~death+agepre+tenpre+polity_lag1+factor(ccode)+factor(year),data=d)
+vc<-vcovCR(m10,cluster=d$ccode,type="CR1")
+se10<-sqrt(diag(vc))
+
+plotty_abs10<-rbind(abs10_noage_nofe,abs10_age_nofe,abs10_noage_fe,abs10_age_fe)
+
+```
+
+```{r, echo = FALSE}
+###H0 Plot - Figure 2 in the main article. 
+
+png("./graphics/figH0.png")
+
+shapes<-c(0, 1, 15, 16)
+colors <- c("#88CCEE", "#117733", "#332288", "#AA4499")
+colors<-c("gray75", "gray50","gray25","gray0")
+
+plot_1<-plotty_pol1
+plot_5<-plotty_pol5
+plot_10<-plotty_pol10
+
+
+plot(x=plot_1[,1],y=c(73:70),xlim=c(-5,5),ylim=c(1,73),pch=shapes,col=colors,yaxt="n",xlab="Coefficient Estimate",ylab="",cex=0.8)
+segments(x0=plot_1[,2],y0=c(73:70),x1=plot_1[,3],y1=c(73:70),col=colors)
+points(x=plot_5[,1],y=c(67:64),pch=shapes,col=colors)
+segments(x0=plot_5[,2],y0=c(67:64),x1=plot_5[,3],y1=c(67:64),col=colors)
+points(x=plot_10[,1],y=c(61:58),pch=shapes,col=colors)
+segments(x0=plot_10[,2],y0=c(61:58),x1=plot_10[,3],y1=c(61:58),col=colors)
+abline(h=56)
+
+plot_1<-plotty_dem1
+plot_5<-plotty_dem5
+plot_10<-plotty_dem10
+points(x=plot_1[,1],y=c(54:51),pch=shapes,col=colors)
+segments(x0=plot_1[,2],y0=c(54:51),x1=plot_1[,3],y1=c(54:51),col=colors)
+points(x=plot_5[,1],y=c(48:45),pch=shapes,col=colors)
+segments(x0=plot_5[,2],y0=c(48:45),x1=plot_5[,3],y1=c(48:45),col=colors)
+points(x=plot_10[,1],y=c(42:39),pch=shapes,col=colors)
+segments(x0=plot_10[,2],y0=c(42:39),x1=plot_10[,3],y1=c(42:39),col=colors)
+abline(h=37)
+
+plot_1<-plotty_rc1
+plot_5<-plotty_rc5
+plot_10<-plotty_rc10
+points(x=plot_1[,1],y=c(35:32),pch=shapes,col=colors)
+segments(x0=plot_1[,2],y0=c(35:32),x1=plot_1[,3],y1=c(35:32),col=colors)
+points(x=plot_5[,1],y=c(29:26),pch=shapes,col=colors)
+segments(x0=plot_5[,2],y0=c(29:26),x1=plot_5[,3],y1=c(29:26),col=colors)
+points(x=plot_10[,1],y=c(23:20),pch=shapes,col=colors)
+segments(x0=plot_10[,2],y0=c(23:20),x1=plot_10[,3],y1=c(23:20),col=colors)
+abline(h=18)
+
+plot_1<-plotty_abs1
+plot_5<-plotty_abs5
+plot_10<-plotty_abs10
+points(x=plot_1[,1],y=c(16:13),pch=shapes,col=colors)
+segments(x0=plot_1[,2],y0=c(16:13),x1=plot_1[,3],y1=c(16:13),col=colors)
+points(x=plot_5[,1],y=c(10:7),pch=shapes,col=colors)
+segments(x0=plot_5[,2],y0=c(10:7),x1=plot_5[,3],y1=c(10:7),col=colors)
+points(x=plot_10[,1],y=c(4:1),pch=shapes,col=colors)
+segments(x0=plot_10[,2],y0=c(4:1),x1=plot_10[,3],y1=c(4:1),col=colors)
+
+abline(v=0,lty=2)
+
+axis(2, at=c(2.5,7.5,12.5,21.5,27.5,33.5,40.5,46.5,52.5,59.5,65.5,71.5),tick=FALSE,labels=rep(c("10yr","5yr","1yr"),4), las=2,cex=0.8)
+legend(2.75,72.5,c("No age, no FE","Age, no FE","No age, FE","Age, FE"), pch=c(0, 1, 15, 16),col=colors,text.font=3,cex=0.8)
+abline(v=0,lty=2)
+
+text(-5.25,59.5,"DV: Polity",vfont=c("sans serif","bold italic"),pos=4)
+
+text(-5.25,40.5,"DV: Democracy",vfont=c("sans serif","bold italic"),pos=4)
+text(-5.25,21.5,"DV: Regime Change",vfont=c("sans serif","bold italic"),pos=4)
+text(-5.25,3.5,"DV: Absolute",vfont=c("sans serif","bold italic"),pos=4)
+text(-5.15,0,"Polity Change",vfont=c("sans serif","bold italic"),pos=4)
+dev.off()
+```
+
+
+
