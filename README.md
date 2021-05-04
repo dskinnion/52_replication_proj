@@ -44,6 +44,8 @@ From the Appendix:
 
 * **/raw-data**: Directory containing raw data made available by Professor Hummel through the Harvard Dataverse
 
+* **/scripts**: Directory containing R scripts necessary to create all graphics
+
 * **Original_Paper.pdf**: A copy of the original paper by Professor Hummel
 
 * **Original_Appendix.pdf**: A copy of the orginial appendix by Professor Hummel
@@ -54,5 +56,7 @@ From the Appendix:
 
 ## Computational Requirement
 R is required to run all code for this project. All files created using RStudio Version 1.3.959 and R version 4.0.2 (2020-06-22). 
+
+*** Libraries needed
 
 
