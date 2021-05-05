@@ -51,14 +51,14 @@ library(stargazer)
 ![Replication of Figure 3](graphics/fig3.png)
 </p>
 
-|       While all of these model specifications indeed show that the average marginal effect of death on Polity increases as does age, the effect is not large, nor statistically significant (note the overlap of the bars with the line at 0). This provides a good indication that there is support to Hummel's first hypothesis that political liberalization is more likely to follow death as a dictator ages. However, because the results are not statistically significant, and appear to have a relatively small effect, we cannot say that age alone is a major contributor to political liberalization after the death of a leader.
-|       As a result, Figure 4 differentiates between regime type: personalist or non-personalist. The models are nearly identical to those from Figure 3, except for the addition of a triple interaction between death, age, and regime type. Furthermore, these models also include a control for leader age at year *t-1*.
+|       While all of these model specifications indeed show that the average marginal effect of death on Polity increases as does age, the effect is not large, nor statistically significant (note the overlap of the bars with the line at 0). This provides a good indication that there is support to Hummel's first hypothesis that "political liberalization is more likely to follow death as a dictator ages" (p. 986). However, because the results are not statistically significant, and appear to have a relatively small effect, we cannot say that age alone is a major contributor to political liberalization after the death of a leader.
+|       As a result, Figure 4 differentiates between regime type: personalist or non-personalist. The models are nearly identical to those from Figure 3, except for the addition of a triple interaction between death, age, and regime type. Furthermore, these models also include a control for leader age at year *t-1*. The fixed effects are the same as described above for Figure 3.
 
 <p>
 ![Replication of Figure 4](graphics/fig4.png)
 </p>
 
-|       These figures support Hummel's second hypothesis that post-death liberalization is more likely as leaders age in personalist regimes. We can see that in all specifications, as personalist leaders age, the average marginal effect of death increases, whereas the opposite is true in non-personalist regimes. Importantly, the effect is statistically significant in models that use the 5-Year and 10-Year Dependent Variables, which implies that political liberalization likely takes time to occur following the death of a personalist leader; reform is not likely in the year immediately following death.
+|       These figures support Hummel's second hypothesis that "post-death liberalization is more likely as leaders age in personalist regimes" (p. 986). We can see that in all specifications, as personalist leaders age, the average marginal effect of death increases, whereas the opposite is true in non-personalist regimes. Importantly, the effect is statistically significant in models that use the 5-Year and 10-Year Dependent Variables, which implies that political liberalization likely takes time to occur following the death of a personalist leader; reform is not likely in the year immediately following death.
 |       However, Hummel also showed that these events are extremely rare: death only accounts for about 10% of leader exits among personalist dictators. This can be seen in the replication of Figure 5.
 
 <p>
@@ -72,15 +72,22 @@ library(stargazer)
 ![Replication of Figure 6](graphics/fig6.png)
 </p>
 
-|       First, my replication was not identical to the initial plot in terms of layout. Mine is slightly more stretched along the x-axis. Substantially, the graphs are the same. We can see that as dictators age, the gap between the personalist and non-personalist dictators' probabilities increase for both attempted coups and irregular exits more broadly. This hints that personalist dictators are perhaps more susceptible to coup attemps than are non-personalist dictators. 
-|       Hummel then plots the survival (as in no coup or irregular exit) probabilities for both personalist and non-personalist regimes, comparing young and old dictators in each. Young and old thresholds are calculated using the 10th and 90th percentiles of dictator ages at death; these end up as 49 and 82, respectively. Using Cox proportional hazard models, she controls for Polity in year *t-1* and the number of coup attempts in the last ten years. In full transparency, I am not adept at Cox proportional hazard models, but I was able to replicate the results thanks to the code provided through the Harvard Dataverse.
+|       First, my replication was not identical to the initial plot in terms of layout. Mine is slightly more stretched along the x-axis. Substantially, the graphs are the same. We can see that as dictators age, the gap between the personalist and non-personalist dictators' probabilities increase for both attempted coups and irregular exits more broadly. This shows that personalist dictators are particularly susceptible to preemptive coup attempts.
+|       Hummel then plots the survival (as in no coup or irregular exit) probabilities for both personalist and non-personalist regimes, comparing young and old dictators in each. Young and old thresholds are calculated using the 10th and 90th percentiles of dictator ages at death; these end up as 49 and 82, respectively. Using Cox proportional hazard models, she controls for Polity in year *t-1* and the number of coup attempts in the last ten years. In full transparency, I am not knowledgeable about Cox proportional hazard models, but I was able to replicate the results thanks to the code provided by Hummel through the Harvard Dataverse.
 
 <p>
 ![Replication of Figure 7](graphics/fig7.png)
 </p>
 
-*** INTERPRET
-*** FIG 8
+|       The overlapping of the young and old intervals in the non-personalist regime plots show that age does not have a significant effect on the probability of survival (i.e. being old does not affect the chances that a non-personalist dictator would face an irregular exit, or more specifically, a coup). However, we can see in the bottom right pane that in a personalist regime, there is a significant distinction between young and old dictators. As the number of years in office increases, so too does the gap in survival probability between young and old dictators; this means that as old dictators age, they face a significant increase in chances of being ousted from power in an irregular exit.
+|       Next, Hummel hypothesizes that "post-death liberalization is more likely as leaders age in economically developed countries" (p. 987). In order to test this hypothesis, she carries out a similar design which was used to create Figure 4; her results are shown in Figure 8. In this case, however, Hummel differentiates by economic development rather than regime type. Here, she focused on Low Development and High Development Regimes. The thresholds are calculated using the 10th and 90th percentiles of the natural log of GDP per capita; these are 6.53 and 8.67, respectively. All models are OLS linear regressions, and include a triple interaction between age, leader death, and development. Controls are included for Polity at year *t-2* and there are fixed effects specifications for country and year for those models. The average marginal effects are calculated the same as in Figure 4. Here is my replication of Figure 8:
+
+<p>
+![Replication of Figure 8](graphics/fig8.png)
+</p>
+
+|       As Hummel notes, the findings are  modest. Based on the directions of the lines, we can see that in an economically developed authoritarian regime, the deaths of older leaders have more positive marginal effects on liberalization compared to younger leaders. On the other hand, in a low-development regime, the deaths of older leaders actually have more negative marginal effects on liberalization compared to younger leaders. It is also important to note that for the most part, confidence intervals overlap, indicating that most of the results are not statistically significant. Furthermore, in many specifications, the average marginal effect of death of an old leader in a high-development regime is still predicted to be negative. In some cases, the confidence intervals may include 0, but on the whole, this implies that a leader death does not increase the likelihood of post-death liberalization in a highly developed country.
+
 *** FIG 9
 
 # Discussion
