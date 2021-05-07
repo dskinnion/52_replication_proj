@@ -14,7 +14,7 @@ The supplemental appendix can be found at https://www.journals.uchicago.edu/doi/
 
 The replication materials can be found at https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/OOLBO9. 
 
-## Variables and Data Sources
+## Important Variables and Data Sources
 
 From the Appendix:
 
@@ -50,13 +50,28 @@ From the Appendix:
 
 * **Original_Appendix.pdf**: A copy of the orginial appendix by Professor Hummel
 
-* **authoritarian_replication.Rmd**: R Markdown file with all of my code necessary for the replication
+* **authoritarian_replication.Rmd**: R Markdown file with the code necessary for the replication paper
 
 * **authoritarian_replication.pdf**: PDF file of the replication paper
 
 ## Computational Requirement
 R is required to run all code for this project. All files created using RStudio Version 1.3.959 and R version 4.0.2 (2020-06-22). 
 
-*** Libraries needed
+Libraries needed to run the code include:
+
+* MASS (Version 7.3.51.6)
+
+* Margins (Version 0.3.26)
+
+* ClubSandwich (Version 0.5.3)
+
+* Stargazer (Version 5.2.2)
+
+* Survival (Version 3.1.12)
+
+* PNG (Version 0.1.7)
+
+* Raster (Version 3.4.5)
+
 
 
