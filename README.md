@@ -42,13 +42,11 @@ From the Appendix:
 
 * **/graphics**: Directory containing images for the project
 
-* **/raw-data**: Directory containing raw data made available by Professor Hummel through the Harvard Dataverse
+* **/raw-data**: Directory containing raw data made available by Professor Sarah Hummel through the Harvard Dataverse
 
 * **/scripts**: Directory containing R scripts necessary to create all graphics
 
-* **Original_Paper.pdf**: A copy of the original paper by Professor Hummel
-
-* **Original_Appendix.pdf**: A copy of the orginial appendix by Professor Hummel
+* **Original_Paper.pdf**: A copy of the original paper by Professor Sarah Hummel
 
 * **authoritarian_replication.Rmd**: R Markdown file with the code necessary for the replication paper
 
