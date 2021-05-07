@@ -3,7 +3,6 @@ title: "Replication of: Leader Age, Death, and Political Liberalization in Dicta
 author: "Dominic Skinnion"
 date: "May 7, 2021"
 output: bookdown::pdf_document2
-#bibliography: bib.bib
 link_citations: true
 toc: false
 indent: false
@@ -23,8 +22,8 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 # Introduction
 
 |       In her original paper, Hummel investigates post-death liberalization in authoritarian regimes. While broadly defined, authoritarian regimes can be considered any regime that is not wholly democratic. Liberalization means that an authoritarian regime democratizes. Post-death liberalization is a specific instance of such democratization when it is propelled by the death of a leader. Former literature shows that post-death liberalization is extremely rare, and much less likely than liberalization after other modes of leader removal (Kendall-Taylor & Frantz, 2016). She then asks the following questions: "What [...] explains the empirical rarity of post-death reform? Are there circumstances that make liberalization possible?" (2020, p. 981).
-|       Hummel first shows that leader death does indeed not lead to liberalization in many cases. She uses four different dependent variables to measure liberalization, including Polity, an indicator for Democracy, an indicator for Regime Change, and Absolute Change in Polity. For each of these, she looks at 1-Year post-death, 5-Years post-death, and 10-Years post-death.
-|       Hummel then relies on theories which take into account leader age. On one hand, reformers would be likely to be able to plan for liberalization if the dictator were aged; knowing that an old dictator is likely to die soon, those who are keen on democratization will be more able to make concrete plans which would take advantage of leader transition. On the other hand, regime elites are also able to take advantage of the transition in their own way; because the threat of leader death looms near, they face increased pressure to ensure a smooth transition. Building on existing theories, Hummel hypothesized that liberalization after the death of an old leader is most likely in economically developed regimes (Treisman, 2015), where demand for liberalization would be strong, and in personalist regimes, where there is high uncertainty in succession (Kendall-Taylor & Frantz, 2016).
+|       Hummel first shows that leader death does indeed not lead to liberalization in many cases. She uses four different dependent variables to measure liberalization, including Polity (which is a scale that measures authoritarianism/democracy), an indicator for Democracy, an indicator for Regime Change, and Absolute Change in Polity. For each of these, she looks at 1-Year post-death, 5-Years post-death, and 10-Years post-death.
+|       Hummel then relies on theories which take into account leader age. On one hand, reformers would be likely to be able to plan for liberalization if the dictator were aged; knowing that an old dictator is likely to die soon, those who are keen on democratization will be more able to make concrete plans which would take advantage of leader transition. On the other hand, regime elites are also able to take advantage of the transition in their own way; because the threat of leader death looms near, they face increased pressure to ensure a smooth transition. Building on existing theories, Hummel hypothesized that liberalization after the death of an old leader is most likely in economically developed regimes (Treisman, 2015), where demand for liberalization would be strong, and in personalist regimes, where there is high uncertainty in succession (Kendall-Taylor & Frantz, 2016). Personalist regimes are those that are built around a single person, commonly resembling a cult of personality.
 |       Using linear and logit regression, with and without fixed effects, Hummel creates forty-eight different models, looking at four key dependent variables: Polity, Democracy, Regime Change, and Absolute Change in Polity. All of these models test the assertion that leader death does not generally lead to liberalization. Next, Hummel uses linear regression models to show that as leaders age, the average marginal effect of leader death on liberalization increases. She further develops these models by separating personalist and non-personalist regimes; she finds that the marginal effect of leader death on liberalization increases in personalist regimes, but not in non-personalist regimes. She lastly separates the regimes by high-development and low-development (in terms of the economy); she finds that high-development does not actually increase the likelihood of post-death liberalization in authoritarian regimes.
 
 # Replication Analysis
@@ -95,12 +94,52 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 
 # Extension
 
-|       Because Hummel's analysis is extremely robust (she did create forty-eight models for just her first part of analysis), there was not much I could do in terms of using different operationalizations of her variables to extend her models. Additionally, her Appendix is highly in-depth and includes 252 models. Due to this depth in modeling, I decided to extend the paper by adapting the black-and-white color scheme to a multi-color palette. Additionally, I made sure to use a color-blind safe palette and followed best data visualization practices for visual impairment.
+|       Because Hummel's analysis is extremely robust (she did create forty-eight models for just her first part of analysis), there was not much I could do in terms of using different operationalizations of her variables to extend her models. Additionally, her Appendix is highly in-depth and includes 252 models. Due to this depth in modeling, I decided to extend the paper by adapting the black-and-white color scheme to a multi-color palette. Additionally, I made sure to use a color-blind safe palette and followed best data visualization practices for visual impairment (Nichols). The following are all of the visualizations made for my extension.
 
-Here
+<p>
+![Figure 1 Extension](graphics/fig_1_ext.png)
+</p>
+
+<p>
+![Figure 2 Extension](graphics/fig2_ext.png)
+</p>
+
+<p>
+![Figure 3 Extension](graphics/fig3_ext.png)
+</p>
+
+<p>
+![Figure 4 Extension](graphics/fig4_ext.png)
+</p>
+
+<p>
+![Figure 5 Extension](graphics/fig5_ext.png)
+</p>
+
+<p>
+![Figure 6 Extension](graphics/fig6_ext.png)
+</p>
+
+<p>
+![Figure 7 Extension](graphics/fig7_ext.png)
+</p>
+
+<p>
+![Figure 8 Extension](graphics/fig8_ext.png)
+</p>
+
+<p>
+![Figure 9 Extension](graphics/fig9_ext.png)
+</p>
+
+|       The multi-color palette makes these more graphs more appealing in the technological world, though they may not translate well to black-and-white print, as the paper was originally published in. However, I have made sure that the colors are safe for those with visual impairments. Additionally, in the extension for Figure 2, I decided to use a multitude of different shapes for the different type of model (shown in the legend), so that they are more easily decipherable as well.
 
 # Discussion
 
+|       If I were to propose an extension of the models given that we had more data on these regimes, I would suggest that we control for some more possible confounders; if we were able to collect data on winning coalition and selectorate sizes, we could possibly control for those factors. Similarly, it would be cool to look at small winning coalition regimes versus large winning coalition regimes in addition to the personalist versus non-personalist distinction. By measuring winning coalition, we could perhaps be able to have a more precise way to measure one of our independent variables. While this would likely correlate with the personalist versus non-personalist dichotomy, it would nonetheless be a good check for robustness. However, I doubt this data is available for such a large sample -- winning coalition and selectorate sizes are hard to calculate for even modern regimes, let alone ones from decades ago.
+|       Importantly, I was able to replicate all of the figures from Hummel's paper, except for one (Figure 7). Originally, the replication code had the bottom two panes as identical figures. Again, I suspect this was a copy-paste error. I attempted to fix this by replacing the model used for the bottom right pane; while this fixed the mistake of the identical plots, it still does not look like the originally published plot. For this reason, I suspect that I used the wrong model here, as it may have been one of the other 6 models in the replication code.
+|       Nonetheless, the replication results still supported the findings from Hummel's paper. We were able to see that post-death liberalization is an extremely rare event. We also learned that there are certain circumstances where the death of a leader may lead to liberalization (though, this is still rare); namely, liberalization after a leader's death can occur when the leader is old and the head of a personalist regime.
+|       This can have major impacts for foreign policy, particularly for those countries that want to help promote democracy abroad. It suggests that waiting for a dictator to die is simply not a good option; the chances that the country liberalizes after his death are not high. For future study, it would be beneficial to carry out similar methods used by Hummel, but assessing the marginal effect of other types of leader exit on liberalization. How often do coups lead to liberalization? How often does foreign military intervention lead to liberalization? While these questions have certainly been tackled by other researchers, it would be interesting to see the same methods used by Hummel applied to these topics. Then, it would be beneficial to compare these types of leader exits so that countries could best determine how to promote democracy abroad.
 
 \newpage
 
@@ -119,6 +158,10 @@ Hummel, Sarah. 2020. “Leader Age, Death, and Political Liberalization in Dicta
 Kendall-Taylor, Andrea, and Erica Frantz. 2016. “When Dictators Die,” *Journal of Democracy*, 27(4): 
 
 |       159–71
+
+Nichols, David. “Coloring for Colorblindness,” *David Math Logic*,
+
+|       davidmathlogic.com/colorblind/#%23648FFF-%23785EF0-%23DC267F-%23FE6100-%23FFB000. 
 
 Treisman, Daniel. 2015. “Income, Democracy, and Leader Turnover,” *American Journal of Political Science*,
 
