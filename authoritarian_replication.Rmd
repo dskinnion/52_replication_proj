@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 
 # Abstract[^1]
 
-|       Hummel (2020) found that leader deaths rarely result in political liberalization; while personalist and older dictators' deaths are more likely to lead to liberalization, such opportunities are nonetheless modest. With replication data and code provided by Professor Hummel through the Harvard Dataverse, I was able to replicate the findings of the original paper (Hummel, 2019). Given the robustness of the many models created in the Appendix of the original paper, I chose to extend the results by adapting the published figures to a multi-color palette. I suspect that the original paper had restrictions on color due to publication standards, so I took the opportunity to beautify the graphs and model results. Additionally, I checked to make sure that the colors I used were able to be distinguished for various different visual impairments.
+|       Hummel (2020) found that leader deaths rarely result in political liberalization; while personalist and older dictators' deaths are more likely to lead to liberalization, such opportunities are nonetheless modest. With replication data and code provided by Professor Hummel through the Harvard Dataverse, I was able to replicate the findings of the original paper (Hummel, 2019). I had trouble replicating Figure 7, due to what I believe to have been a copy-paste error in the replication code. Given the robustness of the many models created in the Appendix of the original paper, I chose to extend the results by adapting the published figures to a multi-color palette. I suspect that the original paper had restrictions on color due to publication standards, so I took the opportunity to beautify the graphs and model results. Additionally, I checked to make sure that the colors I used were able to be distinguished for various different visual impairments.
 
 # Introduction
 
@@ -77,7 +77,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 ![Replication of Figure 7](graphics/fig7.png)
 </p>
 
-|       The overlapping of the young and old intervals in the non-personalist regime plots show that age does not have a significant effect on the probability of survival (i.e. being old does not affect the chances that a non-personalist dictator would face an irregular exit, or more specifically, a coup). However, we can see in the bottom right pane that in a personalist regime, there is a significant distinction between young and old dictators. As the number of years in office increases, so too does the gap in survival probability between young and old dictators; this means that as old dictators age, they face a significant increase in chances of being ousted from power in an irregular exit.
+|       The overlapping of the young and old intervals in the non-personalist regime plots show that age does not have a significant effect on the probability of survival (i.e. being old does not affect the chances that a non-personalist dictator would face an irregular exit, or more specifically, a coup). However, we can see in the bottom right pane that in a personalist regime, there is a significant distinction between young and old dictators. As the number of years in office increases, so too does the gap in survival probability between young and old dictators; this means that as old dictators age, they face a significant increase in chances of being ousted from power in an irregular exit. I had trouble replicating the bottom left plot of this figure, as I believe there had been a copy-paste error in the replication code. I attempted to fix this error by changing the model number in the code, but that also was different than the published figure. The replication above is my best bet at what the code should have been.
 |       Next, Hummel hypothesizes that "post-death liberalization is more likely as leaders age in economically developed countries" (p. 987). In order to test this hypothesis, she carries out a similar design which was used to create Figure 4; her results are shown in Figure 8. In this case, however, Hummel differentiates by economic development rather than regime type. Here, she focused on Low Development and High Development Regimes. The thresholds are calculated using the 10th and 90th percentiles of the natural log of GDP per capita; these are 6.53 and 8.67, respectively. All models are OLS linear regressions, and include a triple interaction between age, leader death, and development. Controls are included for Polity at year *t-2* and there are fixed effects specifications for country and year for those models. The average marginal effects are calculated the same as in Figure 4. Here is my replication of Figure 8:
 
 <p>
@@ -92,6 +92,12 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 </p>
 
 |       We can see that leader death is actually relatively high in proportion to other modes of exit that leaders face in both high development and low development nations. We can also see that in more highly developed regimes, exits through irregular means are less likely than in a less developed regime. This would mean that elites in the nation would be less poised to stage a coup against the leader in a highly developed regime. Thus, in more highly developed regimes, elites would need to use institutional means of replacing the leader in more cases than in a less developed regime.
+
+# Extension
+
+|       Because Hummel's analysis is extremely robust (she did create forty-eight models for just her first part of analysis), there was not much I could do in terms of using different operationalizations of her variables to extend her models. Additionally, her Appendix is highly in-depth and includes 252 models. Due to this depth in modeling, I decided to extend the paper by adapting the black-and-white color scheme to a multi-color palette. Additionally, I made sure to use a color-blind safe palette and followed best data visualization practices for visual impairment.
+
+Here
 
 # Discussion
 
@@ -114,6 +120,10 @@ Kendall-Taylor, Andrea, and Erica Frantz. 2016. “When Dictators Die,” *Journ
 
 |       159–71
 
+Treisman, Daniel. 2015. “Income, Democracy, and Leader Turnover,” *American Journal of Political Science*,
+
+|       59 (4): 927–42
 
 
-[^1]: All materials necessary for this replication can be accessed at my [GitHub Repository: https://github.com/dskinnion/52_replication_proj](https://github.com/dskinnion/52_replication_proj). Additionally, my sincerest thanks to Professor Hummel for making her code and data so accessible in order to replicate the figures.
+
+[^1]: All materials necessary for this replication can be accessed at my [GitHub Repository: https://github.com/dskinnion/52_replication_proj](https://github.com/dskinnion/52_replication_proj). Additionally, my sincerest thanks to Professor Hummel for making her code and data accessible in order to replicate the figures.

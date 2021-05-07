@@ -976,6 +976,79 @@ text(-5.15,0,"Polity Change",vfont=c("sans serif","bold italic"),pos=4)
 dev.off()
 ```
 
+```{r}
+
+### Fig 2 Extension
+
+png("../graphics/fig2_ext.png")
+
+shapes2<-c(0, 1, 15, 16)
+
+colors2 <- c("#6691FF", "#785EF0", "#DC267F", "#FE6100")
+
+
+plot_1<-plotty_pol1
+plot_5<-plotty_pol5
+plot_10<-plotty_pol10
+
+
+plot(x=plot_1[,1],y=c(73:70),xlim=c(-5,5),ylim=c(1,73),pch=shapes2,col=colors2,yaxt="n",xlab="Coefficient Estimate",ylab="",cex=0.8)
+segments(x0=plot_1[,2],y0=c(73:70),x1=plot_1[,3],y1=c(73:70),col=colors2)
+points(x=plot_5[,1],y=c(67:64),pch=shapes2,col=colors2)
+segments(x0=plot_5[,2],y0=c(67:64),x1=plot_5[,3],y1=c(67:64),col=colors2)
+points(x=plot_10[,1],y=c(61:58),pch=shapes2,col=colors2)
+segments(x0=plot_10[,2],y0=c(61:58),x1=plot_10[,3],y1=c(61:58),col=colors2)
+abline(h=56)
+
+plot_1<-plotty_dem1
+plot_5<-plotty_dem5
+plot_10<-plotty_dem10
+points(x=plot_1[,1],y=c(54:51),pch=shapes2,col=colors2)
+segments(x0=plot_1[,2],y0=c(54:51),x1=plot_1[,3],y1=c(54:51),col=colors2)
+points(x=plot_5[,1],y=c(48:45),pch=shapes2,col=colors2)
+segments(x0=plot_5[,2],y0=c(48:45),x1=plot_5[,3],y1=c(48:45),col=colors2)
+points(x=plot_10[,1],y=c(42:39),pch=shapes2,col=colors2)
+segments(x0=plot_10[,2],y0=c(42:39),x1=plot_10[,3],y1=c(42:39),col=colors2)
+abline(h=37)
+
+plot_1<-plotty_rc1
+plot_5<-plotty_rc5
+plot_10<-plotty_rc10
+points(x=plot_1[,1],y=c(35:32),pch=shapes2,col=colors2)
+segments(x0=plot_1[,2],y0=c(35:32),x1=plot_1[,3],y1=c(35:32),col=colors2)
+points(x=plot_5[,1],y=c(29:26),pch=shapes2,col=colors2)
+segments(x0=plot_5[,2],y0=c(29:26),x1=plot_5[,3],y1=c(29:26),col=colors2)
+points(x=plot_10[,1],y=c(23:20),pch=shapes2,col=colors2)
+segments(x0=plot_10[,2],y0=c(23:20),x1=plot_10[,3],y1=c(23:20),col=colors2)
+abline(h=18)
+
+plot_1<-plotty_abs1
+plot_5<-plotty_abs5
+plot_10<-plotty_abs10
+points(x=plot_1[,1],y=c(16:13),pch=shapes2,col=colors2)
+segments(x0=plot_1[,2],y0=c(16:13),x1=plot_1[,3],y1=c(16:13),col=colors2)
+points(x=plot_5[,1],y=c(10:7),pch=shapes2,col=colors2)
+segments(x0=plot_5[,2],y0=c(10:7),x1=plot_5[,3],y1=c(10:7),col=colors2)
+points(x=plot_10[,1],y=c(4:1),pch=shapes2,col=colors2)
+segments(x0=plot_10[,2],y0=c(4:1),x1=plot_10[,3],y1=c(4:1),col=colors2)
+
+abline(v=0,lty=2)
+
+axis(2, at=c(2.5,7.5,12.5,21.5,27.5,33.5,40.5,46.5,52.5,59.5,65.5,71.5),tick=FALSE,labels=rep(c("10yr","5yr","1yr"),4), las=2,cex=0.8)
+legend(2.75,72.5,c("No age, no FE","Age, no FE","No age, FE","Age, FE"), pch=shapes2,col=colors2,text.font=3,cex=0.8)
+abline(v=0,lty=2)
+
+text(-5.25,59.5,"DV: Polity",vfont=c("sans serif","bold italic"),pos=4)
+
+text(-5.25,40.5,"DV: Democracy",vfont=c("sans serif","bold italic"),pos=4)
+text(-5.25,21.5,"DV: Regime Change",vfont=c("sans serif","bold italic"),pos=4)
+text(-5.25,3.5,"DV: Absolute",vfont=c("sans serif","bold italic"),pos=4)
+text(-5.15,0,"Polity Change",vfont=c("sans serif","bold italic"),pos=4)
+dev.off()
+
+```
+
+
 ```{r, echo = FALSE, fig.width=8, fig.height=8}
 
 ### Figure 1 Replication
@@ -1063,6 +1136,99 @@ plot(0:8, 0:8, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "")
 rasterImage(readPNG(source="../graphics/fig_prepostpolity1.png"), 0, 4, 4, 8)
 rasterImage(readPNG(source="../graphics/fig_prepostpolity5.png"), 4, 4, 8, 8)
 rasterImage(readPNG(source="../graphics/fig_prepostpolity10.png"), 0, 0, 4, 4)
+text(0, 7.6, "A", cex=2)
+text(4, 7.6, "B", cex=2)
+text(0, 3.8, "C", cex=2)
+dev.off()
+
+```
+
+```{r}
+
+### Figure 1 Extension
+
+death<-subset(data,death==1)
+
+png(file="../graphics/fig_prepostpolity1_ext.png")
+plot(death$polity_lag1,death$polity_for1,xlim=c(-10,10),ylim=c(-10,10),ylab="Polity, 1 year after",xlab="Polity, year before", col = colors2[1])
+abline(a=0,b=1, col = colors2[2])
+abline(a=5,b=1,lty=5, col = colors2[3])
+abline(a=-5,b=1,lty=5, col = colors2[3])
+s<-subset(death, abs(polity_for1-polity_lag1)>5)
+
+text(8,-8.5,"Greece 1936",cex=0.75, col = colors2[4]) 
+text(4,-5.5,"Ethiopia 1930",cex=0.75, col = colors2[4]) 
+text(4.2,-2.5,"Comoros 1998",cex=0.75, col = colors2[4]) 
+text(2,-9.5,"Paraguay 1940",cex=0.75, col = colors2[4]) 
+
+text(-7,1.5,"Spain 1975",cex=0.75, col = colors2[4]) 
+text(-5,8.5,"Croatia 1999",cex=0.75, col = colors2[4]) 
+text(-9,0.5,"Greece 1941",cex=0.75, col = colors2[4]) 
+text(-9,-1.5,"Bulgaria 1943",cex=0.75, col = colors2[4]) 
+text(-6,4.5,"Nigeria 1998",cex=0.75, col = colors2[4]) 
+text(-6.1,0.5,"Yemen 1962",cex=0.75, col = colors2[4]) 
+dev.off()
+
+png(file="../graphics/fig_prepostpolity5_ext.png")
+plot(death$polity_lag1,death$polity_for5,xlim=c(-10,10),ylim=c(-10,10),ylab="Ave. Polity, 5 years after",xlab="Polity, year before", col = colors2[1])
+abline(a=0,b=1, col = colors2[2])
+abline(a=5,b=1,lty=5, col = colors2[3])
+abline(a=-5,b=1,lty=5, col = colors2[3])
+s<-subset(death, abs(polity_for5-polity_lag1)>5)
+text(-7,7.1,"Spain 1975",cex=0.75, col = colors2[4]) 
+text(-5,8.5,"Croatia 1999",cex=0.75, col = colors2[4]) 
+text(-8,5.3,"Greece 1941",cex=0.75, col = colors2[4]) 
+text(-6,4.5,"Nigeria 1998",cex=0.75, col = colors2[4]) 
+
+text(8,-1.3,"Colombia 1884",cex=0.75, col = colors2[4]) 
+text(2,-9.5,"Paraguay 1940",cex=0.75, col = colors2[4]) 
+text(6,-5.5,"Argentina 1974",cex=0.75, col = colors2[4]) 
+text(8,-6.9,"Greece 1936",cex=0.75, col = colors2[4]) 
+text(4,-4.5,"Ethiopia 1930",cex=0.75, col = colors2[4]) 
+dev.off()
+
+
+png(file="../graphics/fig_prepostpolity10_ext.png")
+plot(death$polity_lag1,death$polity_for10,xlim=c(-10,10),ylim=c(-10,10),ylab="Ave. Polity, 10 years after",xlab="Polity, year before", col = colors2[1])
+abline(a=0,b=1, col = colors2[2])
+abline(a=5,b=1,lty=5, col = colors2[3])
+abline(a=-5,b=1,lty=5, col = colors2[3])
+s<-subset(death, abs(polity_for10-polity_lag1)>5)
+
+text(2,-5.1,"Guatemala 1926",cex=0.6, col = colors2[4]) 
+text(8,0.8,"Colombia 1882",cex=0.6, col = colors2[4]) 
+text(8,-2.4,"Colombia 1884",cex=0.6, col = colors2[4]) 
+text(2,-8,"Paraguay 1940",cex=0.6, col = colors2[4]) 
+text(6,-4.4,"Argentina 1974",cex=0.6, col = colors2[4]) 
+text(8.6,2.1,"Uruguay 1965",cex=0.6, col = colors2[4]) 
+text(8,-1.1,"Uruguay 1967",cex=0.6, col = colors2[4]) 
+text(8,-0.3,"Greece 1936",cex=0.6, col = colors2[4]) 
+text(5.6,-1.9,"Sierra Leone 1964",cex=0.6, col = colors2[4]) 
+
+text(-7.6,-1.4,"Guyana 1985",cex=0.6, col = colors2[4]) 
+text(-7,8.7,"Spain 1975",cex=0.6, col = colors2[4]) 
+text(-9.5,-2.3,"Portugal 1968",cex=0.6, col = colors2[4]) 
+text(-9.5,-0.9,"Albania 1985",cex=0.6, col = colors2[4]) 
+text(-5,9,"Croatia 1999",cex=0.6, col = colors2[4]) 
+text(-8,5.7,"Greece 1941",cex=0.6, col = colors2[4]) 
+text(-7,-0.5,"Russia 1985",cex=0.6, col = colors2[4]) 
+text(-7,0.5,"Niger 1987",cex=0.6, col = colors2[4]) 
+text(-6,4.5,"Nigeria 1998",cex=0.6, col = colors2[4]) 
+text(-1,5.6,"Taiwan",cex=0.6, col = colors2[4]) 
+dev.off()
+
+```
+
+```{r}
+
+### Figure 1 Extension Continued
+
+png("../graphics/fig_1_ext.png", res = 200, units = "in", width = 10, height = 10)
+
+plot(0:8, 0:8, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "")
+rasterImage(readPNG(source="../graphics/fig_prepostpolity1_ext.png"), 0, 4, 4, 8)
+rasterImage(readPNG(source="../graphics/fig_prepostpolity5_ext.png"), 4, 4, 8, 8)
+rasterImage(readPNG(source="../graphics/fig_prepostpolity10_ext.png"), 0, 0, 4, 4)
 text(0, 7.6, "A", cex=2)
 text(4, 7.6, "B", cex=2)
 text(0, 3.8, "C", cex=2)
@@ -1251,6 +1417,11 @@ confi<-function(x,length,lev){
   return(data.frame(confi))
 }
 
+```
+
+``` {r}
+
+### Replication of Fig 3 Cont
 
 png(file="../graphics/fig3.png")
 par(mfrow=c(3,2))
@@ -1310,6 +1481,76 @@ abline(h=0)
 dev.off()
 
 ```
+
+```{r}
+
+### Fig 3 Extension 
+
+png(file="../graphics/fig3_ext.png")
+par(mfrow=c(3,2))
+len<-nrow(summary(marg1_nofe))
+confintty<-confi(marg1_nofe,len,0.9)
+plot(x=summary(marg1_nofe)$agepre,y=as.numeric(summary(marg1_nofe)$AME),pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-2,1.5),cex=0.8, main="1-Year DV, No Fixed Effects", col = colors2[1])
+segments(x0=summary(marg1_nofe)$agepre,
+         y0=confintty$lower[1:len],
+         x1=summary(marg1_nofe)$agepre,
+         y1=confintty$upper[1:len],
+         col = colors2[2])
+abline(h=0)
+
+len<-nrow(summary(marg1_fe))
+confintty<-confi(marg1_fe,len,0.9)
+plot(x=summary(marg1_fe)$agepre,y=as.numeric(summary(marg1_fe)$AME),pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-2,1.5),cex=0.8, main="1-Year DV, Fixed Effects", col = colors2[1])
+segments(x0=summary(marg1_fe)$agepre,
+         y0=confintty$lower[1:len],
+         x1=summary(marg1_fe)$agepre,
+         y1=confintty$upper[1:len], 
+         col = colors2[2])
+abline(h=0)
+
+len<-nrow(summary(marg5_nofe))
+confintty<-confi(marg5_nofe,len,0.9)
+plot(x=summary(marg5_nofe)$agepre,y=as.numeric(summary(marg5_nofe)$AME),pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-2,1.5),cex=0.8, main="5-Year DV, No Fixed Effects", col = colors2[1])
+segments(x0=summary(marg5_nofe)$agepre,
+         y0=confintty$lower[1:len],
+         x1=summary(marg5_nofe)$agepre,
+         y1=confintty$upper[1:len], 
+         col = colors2[2])
+abline(h=0)
+
+len<-nrow(summary(marg5_fe))
+confintty<-confi(marg5_fe,len,0.9)
+plot(x=summary(marg5_fe)$agepre,y=as.numeric(summary(marg5_fe)$AME),pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-2,1.5),cex=0.8, main="5-Year DV, Fixed Effects", col = colors2[1])
+segments(x0=summary(marg5_fe)$agepre,
+         y0=confintty$lower[1:len],
+         x1=summary(marg5_fe)$agepre,
+         y1=confintty$upper[1:len], 
+         col = colors2[2])
+abline(h=0)
+
+len<-nrow(summary(marg10_nofe))
+confintty<-confi(marg10_nofe,len,0.9)
+plot(x=summary(marg10_nofe)$agepre,y=as.numeric(summary(marg10_nofe)$AME),pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-2,1.5),cex=0.8, main="10-Year DV, No Fixed Effects", col = colors2[1])
+segments(x0=summary(marg10_nofe)$agepre,
+         y0=confintty$lower[1:len],
+         x1=summary(marg10_nofe)$agepre,
+         y1=confintty$upper[1:len], 
+         col = colors2[2])
+abline(h=0)
+
+len<-nrow(summary(marg10_fe))
+confintty<-confi(marg10_fe,len,0.9)
+plot(x=summary(marg10_fe)$agepre,y=as.numeric(summary(marg10_fe)$AME),pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-2,1.5),cex=0.8, main="10-Year DV, Fixed Effects", col = colors2[1])
+segments(x0=summary(marg10_fe)$agepre,
+         y0=confintty$lower[1:len],
+         x1=summary(marg10_fe)$agepre,
+         y1=confintty$upper[1:len], 
+         col = colors2[2])
+abline(h=0)
+dev.off()
+
+```
+
 
 ```{r}
 
@@ -1726,9 +1967,6 @@ m6<- lm(polity_for10~death*agepre*personal_lag1+ polity_lag1+factor(year),data=d
 vc<-vcovCR(m6,cluster=d$ccode,type="CR1")
 se6<-sqrt(diag(vc))
 
-
-####FIGURE FOR H2a (Figure 4 in Main Article)
-
 confi<-function(x,length,pers,lev){
 	p<-pers
 	confi<-confint(subset(x,personal_lag1==p & agepre==summary(x)$agepre[1]),level=lev)	
@@ -1739,6 +1977,11 @@ confi<-function(x,length,pers,lev){
 	return(data.frame(confi))
 }
 
+```
+
+```{r}
+
+####FIGURE FOR H2a (Figure 4 in Main Article)
 
 png(file="../graphics/fig4.png")
 par(mfrow=c(3,2))
@@ -1857,6 +2100,144 @@ segments(	x0=summary(marg10_fe)$agepre[1:l1],
 			y1=confintty1$upper[1:l1],col="gray")
 abline(h=0)
 legend(41,9,c("Non-Personalist","Personalist"), pch=19,col=c("black","gray"),text.font=3,cex=0.8)
+
+dev.off()
+
+```
+
+```{r}
+
+#### Fig 4 Extension
+
+png(file="../graphics/fig4_ext.png")
+par(mfrow=c(3,2))
+
+len<-nrow(summary(marg1_nofe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg1_nofe,l1,0,0.9)
+confintty1<-confi(marg1_nofe,l1,1,0.9)
+plot(x=summary(marg1_nofe)$agepre[1:l1],y=summary(marg1_nofe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="1-Year DV, No Fixed Effects", col=colors2[2])
+segments(	x0=summary(marg1_nofe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg1_nofe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1],
+			col = colors2[1])
+points(x=summary(marg1_nofe)$agepre[l2:len],y=summary(marg1_nofe)$AME[l2:len],pch=20, col = colors2[3])
+segments(	x0=summary(marg1_nofe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg1_nofe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1],
+			col = colors2[4])
+abline(h=0)
+legend(41,9,c("Non-Personalist","Personalist"), pch=19,col=c(colors2[2],colors2[3]),text.font=3,cex=0.8)
+
+
+
+len<-nrow(summary(marg1_fe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg1_fe,l1,0,0.9)
+confintty1<-confi(marg1_fe,l1,1,0.9)
+plot(x=summary(marg1_fe)$agepre[1:l1],y=summary(marg1_fe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="1-Year DV, Fixed Effects", col=colors2[2])
+segments(	x0=summary(marg1_nofe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg1_nofe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1],
+			col = colors2[1])
+points(x=summary(marg1_fe)$agepre[l2:len],y=summary(marg1_fe)$AME[l2:len],pch=20, col = colors2[3])
+segments(	x0=summary(marg1_fe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg1_fe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1],
+			col = colors2[4])
+abline(h=0)
+legend(41,9,c("Non-Personalist","Personalist"), pch=19,col=c(colors2[2],colors2[3]),text.font=3,cex=0.8)
+
+
+len<-nrow(summary(marg5_nofe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg5_nofe,l1,0,0.9)
+confintty1<-confi(marg5_nofe,l1,1,0.9)
+plot(x=summary(marg5_nofe)$agepre[1:l1],y=summary(marg5_nofe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="5-Year DV, No Fixed Effects", col=colors2[2])
+segments(	x0=summary(marg5_nofe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg5_nofe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1],
+			col = colors2[1])
+points(x=summary(marg5_nofe)$agepre[l2:len],y=summary(marg5_nofe)$AME[l2:len],pch=20, col = colors2[3])
+segments(	x0=summary(marg5_nofe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg5_nofe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1],
+			col = colors2[4])
+abline(h=0)
+legend(41,9,c("Non-Personalist","Personalist"), pch=19,col=c(colors2[2],colors2[3]),text.font=3,cex=0.8)
+
+
+len<-nrow(summary(marg5_fe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg5_fe,l1,0,0.9)
+confintty1<-confi(marg5_fe,l1,1,0.9)
+plot(x=summary(marg5_fe)$agepre[1:l1],y=summary(marg5_fe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="5-Year DV, Fixed Effects", col=colors2[2])
+segments(	x0=summary(marg5_fe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg5_fe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1],
+			col = colors2[1])
+points(x=summary(marg5_fe)$agepre[l2:len],y=summary(marg5_fe)$AME[l2:len],pch=20, col = colors2[3])
+segments(	x0=summary(marg5_fe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg5_fe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1],
+			col = colors2[4])
+abline(h=0)
+legend(41,9,c("Non-Personalist","Personalist"), pch=19,col=c(colors2[2],colors2[3]),text.font=3,cex=0.8)
+
+
+
+len<-nrow(summary(marg10_nofe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg10_nofe,l1,0,0.9)
+confintty1<-confi(marg10_nofe,l1,1,0.9)
+plot(x=summary(marg10_nofe)$agepre[1:l1],y=summary(marg10_nofe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="10-Year DV, No Fixed Effects", col=colors2[2])
+segments(	x0=summary(marg10_nofe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg10_nofe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1],
+			col = colors2[1])
+points(x=summary(marg10_nofe)$agepre[l2:len],y=summary(marg10_nofe)$AME[l2:len],pch=20, col = colors2[3])
+segments(	x0=summary(marg10_nofe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg10_nofe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1],
+			col = colors2[4])
+abline(h=0)
+legend(41,9,c("Non-Personalist","Personalist"), pch=19,col=c(colors2[2],colors2[3]),text.font=3,cex=0.8)
+
+
+len<-nrow(summary(marg10_fe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg10_fe,l1,0,0.9)
+confintty1<-confi(marg10_fe,l1,1,0.9)
+plot(x=summary(marg10_fe)$agepre[1:l1],y=summary(marg10_fe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="10-Year DV, Fixed Effects", col=colors2[2])
+segments(	x0=summary(marg10_fe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg10_fe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1],
+			col = colors2[1])
+points(x=summary(marg10_fe)$agepre[l2:len],y=summary(marg10_fe)$AME[l2:len],pch=20, col = colors2[3])
+segments(	x0=summary(marg10_fe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg10_fe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1],
+			col = colors2[4])
+abline(h=0)
+legend(41,9,c("Non-Personalist","Personalist"), pch=19,col=c(colors2[2],colors2[3]),text.font=3,cex=0.8)
 
 dev.off()
 
@@ -2027,10 +2408,23 @@ nonpersonalist<-c(noper_perc[3,1],noper_perc[3,2],noper_perc[3,3],noper_perc[3,4
 plotty<-data.frame(personalist, nonpersonalist)
 plotty<-as.matrix(plotty)
 
+```
+
+```{r}
+### Fig 5 Rep Cont
+
 png(file="../graphics/fig5.png")
 barplot(height=plotty,col=c("black","darkgrey","lightgrey","white"), beside=T, legend=c("death","irreg","reg","dem"), ylim=c(0,0.6))
 dev.off()
 
+```
+
+```{r}
+### Fig 5 Extension
+
+png(file="../graphics/fig5_ext.png")
+barplot(height=plotty,col=colors2, beside=T, legend=c("death","irreg","reg","dem"), ylim=c(0,0.6))
+dev.off()
 
 ```
 
@@ -2114,6 +2508,12 @@ se5<-sqrt(diag(vc))
 m6<-clogit(otherirreg~agepre*personal_lag1+ tenpre+polity_lag1 +allcoup_count_lag10 +strata(year),data=nondem)
 se6<-sqrt(diag(vcov(m3)))
 
+```
+
+```{r}
+
+### Fig 6 Rep Cont
+
 ## Figure for H2b (Figure 6 in Main Article)
 png(file="../graphics/fig6.png")
 par(mfrow=c(2,1))
@@ -2185,6 +2585,79 @@ dev.off()
 
 ```{r}
 
+### fig 6 Extension
+
+## Figure for H2b (Figure 6 in Main Article)
+png(file="../graphics/fig6_ext.png")
+par(mfrow=c(2,1))
+
+p1<-mean(nondem$polity_lag1,na.rm=TRUE)
+coup<-mean(nondem$allcoup_count_lag10,na.rm=TRUE)
+nondemd<-subset(nondem,death==1)
+age<-seq(quantile(nondemd$agepre,0.1, na.rm=TRUE),quantile(nondemd$agepre,0.9,na.rm=TRUE),1)
+
+eff1<-predict(plotty1, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=1),type="link",se.fit=TRUE)
+up <- eff1$fit + 2*eff1$se.fit
+low <- eff1$fit - 2*eff1$se.fit
+upper_p<- exp(up)/(1+exp(up))
+lower_p<- exp(low)/(1+exp(low))
+eff1_p<-predict(plotty1, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=1),type="response")
+
+eff1<-predict(plotty1, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=0),type="link",se.fit=TRUE)
+up <- eff1$fit + 2*eff1$se.fit
+low <- eff1$fit - 2*eff1$se.fit
+upper_n <- exp(up)/(1+exp(up))
+lower_n<- exp(low)/(1+exp(low))
+eff1_n<-predict(plotty1, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=0),type="response")
+
+
+plot(age,eff1_p,ylim=c(0,0.4),type="l",ylab="Predicted Probability",xlab="Leader Age",main="DV: Attempted Coup", col='black')
+cord.x<-c(age[1],age[1],age,age[length(age)],age[length(age)],rev(age))
+cord.y<-c(upper_p[1],lower_p[1],lower_p,lower_p[length(age)],upper_p[length(age)],rev(upper_p))
+polygon(cord.x,cord.y, col=rgb(100/255,143/255,255/255,alpha=0.6))
+lines(age,eff1_n, col='black')
+cord.x<-c(age[1],age[1],age,age[length(age)],age[length(age)],rev(age))
+cord.y<-c(upper_n[1],lower_n[1],lower_n,lower_n[length(age)],upper_n[length(age)],rev(upper_n))
+polygon(cord.x,cord.y,col=rgb(254/255,97/255,0/255,alpha=0.6))
+legend(52,0.385,c("Personalist","Non-Personalist"), pch=19,col=c(rgb(100/255,143/255,255/255,alpha=0.6), rgb(254/255,97/255,0/255,alpha=0.6)),text.font=3,cex=0.8)
+
+
+p1<-mean(nondem$polity_lag1,na.rm=TRUE)
+coup<-mean(nondem$allcoup_count_lag10,na.rm=TRUE)
+nondemd<-subset(nondem,death==1)
+age<-seq(quantile(nondemd$agepre,0.1, na.rm=TRUE),quantile(nondemd$agepre,0.9,na.rm=TRUE),1)
+
+eff1<-predict(plotty2, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=1),type="link",se.fit=TRUE)
+up <- eff1$fit + 2*eff1$se.fit
+low <- eff1$fit - 2*eff1$se.fit
+upper_p<- exp(up)/(1+exp(up))
+lower_p<- exp(low)/(1+exp(low))
+eff1_p<-predict(plotty2, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=1),type="response")
+
+eff1<-predict(plotty2, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=0),type="link",se.fit=TRUE)
+up <- eff1$fit + 2*eff1$se.fit
+low <- eff1$fit - 2*eff1$se.fit
+upper_n <- exp(up)/(1+exp(up))
+lower_n<- exp(low)/(1+exp(low))
+eff1_n<-predict(plotty2, newdata=data.frame(polity_lag1=p1,allcoup_count_lag10=coup,agepre=age,personal_lag1=0),type="response")
+
+
+plot(age,eff1_p,ylim=c(0,0.4),type="l",ylab="Predicted Probability",xlab="Leader Age",main="DV: Irregular Exit",col='black')
+cord.x<-c(age[1],age[1],age,age[length(age)],age[length(age)],rev(age))
+cord.y<-c(upper_p[1],lower_p[1],lower_p,lower_p[length(age)],upper_p[length(age)],rev(upper_p))
+polygon(cord.x,cord.y,col=rgb(100/255,143/255,255/255,alpha=0.6))
+lines(age,eff1_n,col='black')
+cord.x<-c(age[1],age[1],age,age[length(age)],age[length(age)],rev(age))
+cord.y<-c(upper_n[1],lower_n[1],lower_n,lower_n[length(age)],upper_n[length(age)],rev(upper_n))
+polygon(cord.x,cord.y,col=rgb(254/255,97/255,0,alpha=0.6))
+legend(52,0.385,c("Personalist","Non-Personalist"), pch=19,col=c(rgb(100/255,143/255,255/255,alpha=0.6), rgb(254/255,97/255,0,alpha=0.6)),text.font=3,cex=0.8)
+
+dev.off()
+
+```
+
+```{r}
+
 ### Replication of Figure 7
 
 #### H2b: Survival analysis 
@@ -2226,6 +2699,11 @@ nondemd<-subset(nondem,death==1)
 al<-round(quantile(nondemd$agepre,0.1, na.rm=TRUE))
 ah<-round(quantile(nondemd$agepre,0.9,na.rm=TRUE))
 
+```
+
+```{r}
+
+### Fig 7 Rep Cont
 
 png(file="../graphics/fig7.png")
 par(mfrow=c(2,2))
@@ -2268,9 +2746,9 @@ text(3.5,1.17,c("Non-Personalist Regimes"),vfont=c("sans serif","bold italic"),p
 
 
 newdata_young<-data.frame(agepre=al, polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE),personal_lag1=1,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
-fit_young<-survfit(m9,newdata=newdata_young,conf.type="plain",conf.int=0.9)
+fit_young<-survfit(m3,newdata=newdata_young,conf.type="plain",conf.int=0.9)
 newdata_old<-data.frame(agepre=ah,polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE), personal_lag1=1,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
-fit_old<-survfit(m9,newdata=newdata_old,conf.type="plain",conf.int=0.90)
+fit_old<-survfit(m3,newdata=newdata_old,conf.type="plain",conf.int=0.90)
 plot(fit_young$time[1:xmax], fit_young$surv[1:xmax],lty=1,main = "",xlab="years in office",ylab="survival= no coup",type="l",ylim=c(0,1.2),xlim=c(fit_young$time[1],fit_young$time[xmax]),yaxt="n")
 axis(2,at=c(0,0.2,0.4,0.6,0.8,1),labels=c("0","0.2","0.4","0.6","0.8","1"),las=2)
 cord.x<-c(fit_young$time[1],fit_young$time[1],fit_young$time[1:xmax],fit_young$time[xmax],fit_young$time[xmax],rev(fit_young$time[1:xmax]))
@@ -2299,6 +2777,88 @@ cord.y<-c(fit_old$upper[1],fit_old$lower[1],fit_old$lower[1:xmax],fit_old$lower[
 polygon(cord.x,cord.y,col=rgb(0,0,0,alpha=0.3))
 abline(h=1.1)
 legend(fit_old$time[xmax]-6,1.05,legend=c("Young","Old"),pch=19,col=c(rgb(0,0,0,alpha=0.6),rgb(0,0,0,alpha=0.3)))
+text(1,1.17,c("Personalist Regimes"),vfont=c("sans serif","bold italic"),pos=4)
+
+dev.off()
+
+```
+
+```{r}
+
+### Fig 7 Extension
+
+png(file="../graphics/fig7_ext.png")
+par(mfrow=c(2,2))
+
+xmax<-20
+
+newdata_young<-data.frame(agepre=al, polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE),personal_lag1=0,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_young<-survfit(m3,newdata=newdata_young,conf.type="plain",conf.int=0.9)
+newdata_old<-data.frame(agepre=ah,polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE), personal_lag1=0,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_old<-survfit(m3,newdata=newdata_old,conf.type="plain",conf.int=0.90)
+plot(fit_young$time[1:xmax], fit_young$surv[1:xmax],lty=1,main = "DV: Coup Attempt",xlab="years in office",ylab="survival= no coup",type="l",ylim=c(0,1.2),xlim=c(fit_young$time[1],fit_young$time[xmax]),yaxt="n")
+axis(2,at=c(0,0.2,0.4,0.6,0.8,1),labels=c("0","0.2","0.4","0.6","0.8","1"),las=2)
+cord.x<-c(fit_young$time[1],fit_young$time[1],fit_young$time[1:xmax],fit_young$time[xmax],fit_young$time[xmax],rev(fit_young$time[1:xmax]))
+cord.y<-c(fit_young$upper[1],fit_young$lower[1],fit_young$lower[1:xmax],fit_young$lower[xmax],fit_young$upper[xmax],rev(fit_young$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(100/255,143/255,255/255,alpha=0.6))
+lines(fit_old$time[1:xmax], fit_old$surv[1:xmax])
+cord.x<-c(fit_old$time[1],fit_old$time[1],fit_old$time[1:xmax],fit_old$time[xmax],fit_old$time[xmax],rev(fit_old$time[1:xmax]))
+cord.y<-c(fit_old$upper[1],fit_old$lower[1],fit_old$lower[1:xmax],fit_old$lower[xmax],fit_old$upper[xmax],rev(fit_old$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(254/255,97/255,0,alpha=0.6))
+abline(h=1.1)
+legend(fit_old$time[xmax]-6,1.05,legend=c("Young","Old"),pch=19,col=c(rgb(100/255,143/255,255/255,alpha=0.6),rgb(254/255,97/255,0,alpha=0.6)))
+text(3.5,1.17,c("Non-Personalist Regimes"),vfont=c("sans serif","bold italic"),pos=4)
+
+newdata_young<-data.frame(agepre=al, polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE),personal_lag1=0,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_young<-survfit(m9,newdata=newdata_young,conf.type="plain",conf.int=0.9)
+newdata_old<-data.frame(agepre=ah,polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE), personal_lag1=0,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_old<-survfit(m9,newdata=newdata_old,conf.type="plain",conf.int=0.90)
+plot(fit_young$time[1:xmax], fit_young$surv[1:xmax],lty=1,main = "DV: Irregular Exit",xlab="years in office",ylab="survival= no irregular exit",type="l",ylim=c(0,1.2),xlim=c(fit_young$time[1],fit_young$time[xmax]),yaxt="n")
+axis(2,at=c(0,0.2,0.4,0.6,0.8,1),labels=c("0","0.2","0.4","0.6","0.8","1"),las=2)
+cord.x<-c(fit_young$time[1],fit_young$time[1],fit_young$time[1:xmax],fit_young$time[xmax],fit_young$time[xmax],rev(fit_young$time[1:xmax]))
+cord.y<-c(fit_young$upper[1],fit_young$lower[1],fit_young$lower[1:xmax],fit_young$lower[xmax],fit_young$upper[xmax],rev(fit_young$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(100/255,143/255,255/255,alpha=0.6))
+lines(fit_old$time[1:xmax], fit_old$surv[1:xmax])
+cord.x<-c(fit_old$time[1],fit_old$time[1],fit_old$time[1:xmax],fit_old$time[xmax],fit_old$time[xmax],rev(fit_old$time[1:xmax]))
+cord.y<-c(fit_old$upper[1],fit_old$lower[1],fit_old$lower[1:xmax],fit_old$lower[xmax],fit_old$upper[xmax],rev(fit_old$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(254/255,97/255,0,alpha=0.6))
+abline(h=1.1)
+legend(fit_old$time[xmax]-6,1.05,legend=c("Young","Old"),pch=19,col=c(rgb(100/255,143/255,255/255,alpha=0.6),rgb(254/255,97/255,0,alpha=0.6)))
+text(3.5,1.17,c("Non-Personalist Regimes"),vfont=c("sans serif","bold italic"),pos=4)
+
+
+newdata_young<-data.frame(agepre=al, polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE),personal_lag1=1,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_young<-survfit(m3,newdata=newdata_young,conf.type="plain",conf.int=0.9)
+newdata_old<-data.frame(agepre=ah,polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE), personal_lag1=1,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_old<-survfit(m3,newdata=newdata_old,conf.type="plain",conf.int=0.90)
+plot(fit_young$time[1:xmax], fit_young$surv[1:xmax],lty=1,main = "",xlab="years in office",ylab="survival= no coup",type="l",ylim=c(0,1.2),xlim=c(fit_young$time[1],fit_young$time[xmax]),yaxt="n")
+axis(2,at=c(0,0.2,0.4,0.6,0.8,1),labels=c("0","0.2","0.4","0.6","0.8","1"),las=2)
+cord.x<-c(fit_young$time[1],fit_young$time[1],fit_young$time[1:xmax],fit_young$time[xmax],fit_young$time[xmax],rev(fit_young$time[1:xmax]))
+cord.y<-c(fit_young$upper[1],fit_young$lower[1],fit_young$lower[1:xmax],fit_young$lower[xmax],fit_young$upper[xmax],rev(fit_young$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(100/255,143/255,255/255,alpha=0.6))
+lines(fit_old$time[1:xmax], fit_old$surv[1:xmax])
+cord.x<-c(fit_old$time[1],fit_old$time[1],fit_old$time[1:xmax],fit_old$time[xmax],fit_old$time[xmax],rev(fit_old$time[1:xmax]))
+cord.y<-c(fit_old$upper[1],fit_old$lower[1],fit_old$lower[1:xmax],fit_old$lower[xmax],fit_old$upper[xmax],rev(fit_old$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(254/255,97/255,0,alpha=0.6))
+abline(h=1.1)
+legend(fit_old$time[xmax]-6,1.05,legend=c("Young","Old"),pch=19,col=c(rgb(100/255,143/255,255/255,alpha=0.6),rgb(254/255,97/255,0,alpha=0.6)))
+text(5,1.17,c("Personalist Regimes"),vfont=c("sans serif","bold italic"),pos=4)
+
+newdata_young<-data.frame(agepre=al, polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE),personal_lag1=1,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_young<-survfit(m9,newdata=newdata_young,conf.type="plain",conf.int=0.9)
+newdata_old<-data.frame(agepre=ah,polity_lag1=mean(nondemsurv$polity_lag1,na.rm=TRUE), personal_lag1=1,allcoup_count_lag10=mean(nondemsurv$allcoup_count_lag10,na.rm=TRUE))
+fit_old<-survfit(m9,newdata=newdata_old,conf.type="plain",conf.int=0.90)
+plot(fit_young$time[1:xmax], fit_young$surv[1:xmax],lty=1,main = "",xlab="years in office",ylab="survival= no irregular exit",type="l",ylim=c(0,1.2),xlim=c(fit_young$time[1],fit_young$time[xmax]),yaxt="n")
+axis(2,at=c(0,0.2,0.4,0.6,0.8,1),labels=c("0","0.2","0.4","0.6","0.8","1"),las=2)
+cord.x<-c(fit_young$time[1],fit_young$time[1],fit_young$time[1:xmax],fit_young$time[xmax],fit_young$time[xmax],rev(fit_young$time[1:xmax]))
+cord.y<-c(fit_young$upper[1],fit_young$lower[1],fit_young$lower[1:xmax],fit_young$lower[xmax],fit_young$upper[xmax],rev(fit_young$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(100/255,143/255,255/255,alpha=0.6))
+lines(fit_old$time[1:xmax], fit_old$surv[1:xmax])
+cord.x<-c(fit_old$time[1],fit_old$time[1],fit_old$time[1:xmax],fit_old$time[xmax],fit_old$time[xmax],rev(fit_old$time[1:xmax]))
+cord.y<-c(fit_old$upper[1],fit_old$lower[1],fit_old$lower[1:xmax],fit_old$lower[xmax],fit_old$upper[xmax],rev(fit_old$upper[1:xmax]))
+polygon(cord.x,cord.y,col=rgb(254/255,97/255,0,alpha=0.6))
+abline(h=1.1)
+legend(fit_old$time[xmax]-6,1.05,legend=c("Young","Old"),pch=19,col=c(rgb(100/255,143/255,255/255,alpha=0.6),rgb(254/255,97/255,0,alpha=0.6)))
 text(1,1.17,c("Personalist Regimes"),vfont=c("sans serif","bold italic"),pos=4)
 
 dev.off()
@@ -2496,6 +3056,11 @@ confi<-function(x,length,gdp,lev){
 	return(data.frame(confi))
 }
 
+```
+
+```{r}
+
+### Fig 8 Rep Cont
 
 png(file="../graphics/fig8.png")
 par(mfrow=c(3,2))
@@ -2607,6 +3172,126 @@ segments(	x0=summary(marg10_fe)$agepre[1:l1],
 			y1=confintty1$upper[1:l1],col="gray")
 abline(h=0)
 legend(58.4,9,c("Low-Development","High-Development"), pch=19,col=c("black","gray"),text.font=3,cex=0.8)
+
+dev.off()
+
+```
+
+```{r}
+
+### Fig 8 Extension
+
+png(file="../graphics/fig8_ext.png")
+par(mfrow=c(3,2))
+
+len<-nrow(summary(marg1_nofe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg1_nofe,l1,gdp1,0.9)
+confintty1<-confi(marg1_nofe,l1,gdp2,0.9)
+plot(x=summary(marg1_nofe)$agepre[1:l1],y=summary(marg1_nofe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="1-Year DV, No Fixed Effects", col=colors2[2])
+segments(	x0=summary(marg1_nofe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg1_nofe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1],
+			col=colors2[1])
+points(x=summary(marg1_nofe)$agepre[l2:len],y=summary(marg1_nofe)$AME[l2:len],pch=20, col=colors2[3])
+segments(	x0=summary(marg1_nofe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg1_nofe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1], col=colors2[4])
+abline(h=0)
+legend(60,9,c("Low-Development","High-Development"), pch=19,col=c(colors2[2],colors2[3]),text.font=3,cex=0.8)
+
+len<-nrow(summary(marg1_fe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg1_fe,l1,gdp1,0.9)
+confintty1<-confi(marg1_fe,l1,gdp2,0.9)
+plot(x=summary(marg1_fe)$agepre[1:l1],y=summary(marg1_fe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="1-Year DV, Fixed Effects", col=colors2[2])
+segments(	x0=summary(marg1_fe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg1_fe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1], col=colors2[1])
+points(x=summary(marg1_fe)$agepre[l2:len],y=summary(marg1_fe)$AME[l2:len],pch=20, col=colors2[3])
+segments(	x0=summary(marg1_fe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg1_fe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1], col=colors2[4])
+abline(h=0)
+legend(60,9,c("Low-Development","High-Development"), pch=19,col=c(colors2[2],colors2[3]),text.font=3,cex=0.8)
+
+len<-nrow(summary(marg5_nofe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg5_nofe,l1,gdp1,0.9)
+confintty1<-confi(marg5_nofe,l1,gdp2,0.9)
+plot(x=summary(marg5_nofe)$agepre[1:l1],y=summary(marg5_nofe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="5-Year DV, No Fixed Effects", col=colors2[2])
+segments(	x0=summary(marg5_nofe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg5_nofe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1], col=colors2[1])
+points(x=summary(marg5_nofe)$agepre[l2:len],y=summary(marg5_nofe)$AME[l2:len],pch=20, col=colors2[3])
+segments(	x0=summary(marg5_nofe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg5_nofe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1], col=colors2[4])
+abline(h=0)
+legend(59.4,9,c("Low-Development","High-Development"), pch=19,col=c(colors2[2],colors2[3]),text.font=3,cex=0.8)
+
+len<-nrow(summary(marg5_fe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg5_fe,l1,gdp1,0.9)
+confintty1<-confi(marg5_fe,l1,gdp2,0.9)
+plot(x=summary(marg5_fe)$agepre[1:l1],y=summary(marg5_fe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="5-Year DV, Fixed Effects", col=colors2[2])
+segments(	x0=summary(marg5_fe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg5_fe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1], col=colors2[1])
+points(x=summary(marg5_fe)$agepre[l2:len],y=summary(marg5_fe)$AME[l2:len],pch=20, col=colors2[3])
+segments(	x0=summary(marg5_fe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg5_fe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1], col=colors2[4])
+abline(h=0)
+legend(59.4,9,c("Low-Development","High-Development"), pch=19,col=c(colors2[2],colors2[3]),text.font=3,cex=0.8)
+
+len<-nrow(summary(marg10_nofe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg10_nofe,l1,gdp1,0.9)
+confintty1<-confi(marg10_nofe,l1,gdp2,0.9)
+plot(x=summary(marg10_nofe)$agepre[1:l1],y=summary(marg10_nofe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="10-Year DV, No Fixed Effects", col=colors2[2])
+segments(	x0=summary(marg10_nofe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg10_nofe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1], col=colors2[1])
+points(x=summary(marg10_nofe)$agepre[l2:len],y=summary(marg10_nofe)$AME[l2:len],pch=20, col=colors2[3])
+segments(	x0=summary(marg10_nofe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg10_nofe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1], col=colors2[4])
+abline(h=0)
+legend(58.4,9,c("Low-Development","High-Development"), col=c(colors2[2],colors2[3]),text.font=3,cex=0.8)
+
+len<-nrow(summary(marg10_fe))
+l1<-len/2
+l2<-l1+1
+confintty0<-confi(marg10_fe,l1,gdp1,0.9)
+confintty1<-confi(marg10_fe,l1,gdp2,0.9)
+plot(x=summary(marg10_fe)$agepre[1:l1],y=summary(marg10_fe)$AME[1:l1],pch=20,xlab="Age",ylab="Average Marginal Effect of Death",ylim=c(-10,10),cex=0.8, main="10-Year DV, Fixed Effects", col=colors2[2])
+segments(	x0=summary(marg10_fe)$agepre[1:l1],
+			y0=confintty0$lower[1:l1],
+			x1=summary(marg10_fe)$agepre[1:l1],
+			y1=confintty0$upper[1:l1], col=colors2[1])
+points(x=summary(marg10_fe)$agepre[l2:len],y=summary(marg10_fe)$AME[l2:len],pch=20, col=colors2[3])
+segments(	x0=summary(marg10_fe)$agepre[1:l1],
+			y0=confintty1$lower[1:l1],
+			x1=summary(marg10_fe)$agepre[1:l1],
+			y1=confintty1$upper[1:l1], col=colors2[4])
+abline(h=0)
+legend(58.4,9,c("Low-Development","High-Development"), pch=19,col=c(colors2[2],colors2[3]),text.font=3,cex=0.8)
 
 dev.off()
 
@@ -2760,10 +3445,25 @@ high<-c(high_perc[3,1],high_perc[3,2],high_perc[3,3],high_perc[3,4])
 plotty<-data.frame(high,low)
 plotty<-as.matrix(plotty)
 
+```
+
+```{r}
+
+### Fig 9 Rep Cont
+
 png(file="../graphics/fig9.png")
 barplot(height=plotty,col=c("black","darkgrey","lightgrey","white"), beside=T, legend=c("death","irreg","reg","dem"), ylim=c(0,0.6),names.arg=c("high development", "low development"))
 dev.off()
 
 ```
 
+```{r}
+
+### Fig 9 Ext 
+
+png(file="../graphics/fig9_ext.png")
+barplot(height=plotty,col=colors2, beside=T, legend=c("death","irreg","reg","dem"), ylim=c(0,0.6),names.arg=c("high development", "low development"))
+dev.off()
+
+```
 
